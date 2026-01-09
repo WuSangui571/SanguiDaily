@@ -1,0 +1,111 @@
+############################################
+# OS / General
+############################################
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+############################################
+# Logs
+############################################
+*.log
+logs/
+log/
+
+############################################
+# IDEs
+############################################
+.idea/
+*.iml
+out/
+
+.project
+.classpath
+.settings/
+.springBeans
+.factorypath
+
+.vscode/
+*.code-workspace
+
+############################################
+# ========== Frontend: sanguidaily-front ==========
+############################################
+# Node dependencies & caches
+sanguidaily-front/node_modules/
+sanguidaily-front/npm-debug.log*
+sanguidaily-front/yarn-debug.log*
+sanguidaily-front/yarn-error.log*
+sanguidaily-front/pnpm-debug.log*
+
+# Uni-app / Vue build outputs
+sanguidaily-front/dist/
+sanguidaily-front/dist-dev/
+sanguidaily-front/dist-prod/
+sanguidaily-front/unpackage/
+
+# HBuilderX / local history
+sanguidaily-front/.hbuilderx/
+sanguidaily-front/.history/
+
+# WeChat Mini Program build outputs (if you export to these folders)
+sanguidaily-front/mp-weixin/
+sanguidaily-front/miniprogram_npm/
+
+# Local env files (keep examples)
+sanguidaily-front/.env
+sanguidaily-front/.env.*
+!sanguidaily-front/.env.example
+!sanguidaily-front/.env.development.example
+!sanguidaily-front/.env.production.example
+
+############################################
+# ========== Backend: sanguidaily-back ==========
+############################################
+# Maven
+sanguidaily-back/target/
+sanguidaily-back/pom.xml.tag
+sanguidaily-back/pom.xml.releaseBackup
+sanguidaily-back/pom.xml.versionsBackup
+sanguidaily-back/pom.xml.next
+sanguidaily-back/release.properties
+sanguidaily-back/dependency-reduced-pom.xml
+sanguidaily-back/buildNumber.properties
+sanguidaily-back/.mvn/timing.properties
+
+# Gradle (if you use it)
+sanguidaily-back/build/
+sanguidaily-back/.gradle/
+
+# Java compiled artifacts
+sanguidaily-back/**/*.class
+sanguidaily-back/**/*.jar
+sanguidaily-back/**/*.war
+
+# Spring Boot runtime / local configs (do not commit)
+sanguidaily-back/src/main/resources/application-local.yml
+sanguidaily-back/src/main/resources/application-local.yaml
+sanguidaily-back/src/main/resources/application-dev.yml
+sanguidaily-back/src/main/resources/application-dev.yaml
+sanguidaily-back/src/main/resources/application-prod.yml
+sanguidaily-back/src/main/resources/application-prod.yaml
+sanguidaily-back/src/main/resources/application-test.yml
+sanguidaily-back/src/main/resources/application-test.yaml
+
+sanguidaily-back/src/main/resources/application-local.properties
+sanguidaily-back/src/main/resources/application-dev.properties
+sanguidaily-back/src/main/resources/application-prod.properties
+sanguidaily-back/src/main/resources/application-test.properties
+
+# JVM crash logs
+hs_err_pid*
+
+############################################
+# Keep wrappers (do not ignore)
+############################################
+!sanguidaily-back/mvnw
+!sanguidaily-back/mvnw.cmd
+!sanguidaily-back/gradlew
+!sanguidaily-back/gradlew.bat
+!sanguidaily-back/gradle/wrapper/gradle-wrapper.jar
+!sanguidaily-back/gradle/wrapper/gradle-wrapper.properties
