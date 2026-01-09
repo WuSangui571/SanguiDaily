@@ -6,10 +6,14 @@
 ---
 
 ## 1. 项目概览
-- 项目名称：
-- 技术栈：
-- 运行方式：
+- 项目名称：三桂日常（SanguiDaily）
+- 技术栈：uni-app（Vue2）
+- 运行方式：前端位于 `sanguidaily-front`
 - 目录结构概览：
+  - `sanguidaily-front/src/pages`：页面
+  - `sanguidaily-front/src/components`：通用组件
+  - `sanguidaily-front/src/stores`：Mock 数据与状态
+  - `sanguidaily-front/src/utils`：时间/ID 等工具
 
 ---
 
@@ -28,6 +32,12 @@
 ## 3. 模块地图（Module Map）
 | 模块/目录 | 职责 | 入口文件 | 备注 |
 | --------- | ---- | -------- | ---- |
+| pages/feed | 时间线首页 | `sanguidaily-front/src/pages/feed/index.vue` | 朋友圈风格卡片流 |
+| pages/post-detail | 动态详情 | `sanguidaily-front/src/pages/post-detail/index.vue` | 复用卡片完整展示 |
+| pages/composer | 发布页 | `sanguidaily-front/src/pages/composer/index.vue` | 按类型提交本地数据 |
+| pages/me | 我的 | `sanguidaily-front/src/pages/me/index.vue` | 角色与入口 |
+| components | 动态卡片与子组件 | `sanguidaily-front/src/components/*` | PostCard/媒体/点赞 |
+| stores | Mock 数据与行为 | `sanguidaily-front/src/stores/*` | user/post/image/like |
 
 ---
 
@@ -45,7 +55,10 @@
 ## 5. 数据模型与关键约束
 | 模型  | 字段   | 约束                |
 | ----- | ------ | ------------------- |
-| Order | status | 枚举只能在 xxx 维护 |
+| t_user | role | OWNER / VIEWER / SUSPENDED |
+| t_post | type | 0 文本 / 1 图片 / 2 链接 / 3 视频 |
+| t_post | status | 0 公开 / 1 私密 |
+| t_post_image | sort_order | 九宫格按序展示 |
 
 ---
 
