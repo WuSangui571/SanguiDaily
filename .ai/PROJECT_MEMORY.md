@@ -7,13 +7,16 @@
 
 ## 1. 项目概览
 - 项目名称：三桂日常（SanguiDaily）
-- 技术栈：uni-app（Vue2）
+- 技术栈：uni-app（Vue2）+ Spring Boot（Java 21, JDBC, MySQL）
 - 运行方式：前端位于 `sanguidaily-front`
+- 后端位于 `sanguidaily-back`
 - 目录结构概览：
   - `sanguidaily-front/src/pages`：页面
   - `sanguidaily-front/src/components`：通用组件
-  - `sanguidaily-front/src/stores`：Mock 数据与状态
+  - `sanguidaily-front/src/stores`：数据状态
   - `sanguidaily-front/src/utils`：时间/ID 等工具
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily`：后端入口与 API
+  - `sanguidaily-back/src/main/resources/application.properties`：后端配置
 
 ---
 
@@ -37,7 +40,8 @@
 | pages/composer | 发布页 | `sanguidaily-front/src/pages/composer/index.vue` | 按类型提交本地数据 |
 | pages/me | 我的 | `sanguidaily-front/src/pages/me/index.vue` | 角色与入口 |
 | components | 动态卡片与子组件 | `sanguidaily-front/src/components/*` | PostCard/媒体/点赞 |
-| stores | Mock 数据与行为 | `sanguidaily-front/src/stores/*` | user/post/image/like |
+| stores | 数据与行为 | `sanguidaily-front/src/stores/*` | user/post/image/like |
+| back/api | 后端接口 | `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/*` | users/posts/images/likes |
 
 ---
 
@@ -49,6 +53,17 @@
   - 文件：
   - 作用：
   - 注意事项：
+
+### 4.2 后端 API（已落地）
+- `GET /api/users/current`
+- `GET /api/posts`
+- `GET /api/posts/{id}`
+- `POST /api/posts`
+- `GET /api/post-images`
+- `POST /api/post-images/batch`
+- `GET /api/post-likes`
+- `POST /api/post-likes`
+- `DELETE /api/post-likes`
 
 ---
 

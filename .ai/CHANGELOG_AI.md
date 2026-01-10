@@ -5,6 +5,41 @@
 
 ---
 
+## [2026-01-10] 初始化后端接口并联通前端
+- 背景/需求：后端空白，需要提供基础 API 并替换前端 Mock 数据，整理可导入 SQL 种子
+- 修改类型：feat
+- 影响范围：后端接口 / 前端数据源 / 数据初始化
+- 变更摘要：
+  1) 新增用户/动态/图片/点赞 API 与基础数据访问层
+  2) 前端 stores 改为请求后端并移除内置 Mock 数据
+  3) 生成前端示例数据的 SQL 种子文件
+- 涉及文件：
+  - `sanguidaily-back/pom.xml`
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/config/JacksonConfig.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/config/WebConfig.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/*`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/*`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/*`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/model/*`
+  - `sanguidaily-front/src/utils/api.js`
+  - `sanguidaily-front/src/stores/*`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/post-detail/index.vue`
+  - `sanguidaily-front/src/pages/composer/index.vue`
+  - `sanguidaily-front/src/pages/me/index.vue`
+  - `sanguidaily_seed.sql`
+- 检索与复用策略：
+  - 检索关键词：postStore / imageStore / likeStore / t_post / t_post_image / t_post_like / t_user
+  - 找到的旧实现：前端 Mock stores + 数据库结构 SQL
+  - 最终选择：复用字段与排序/可见性规则，新增后端最小接口
+- 风险点：
+  - 需配置数据库连接环境变量与前端 API Base
+- 验证方式：
+  - 启动后端并请求 /api/posts、/api/post-images、/api/post-likes（未执行）
+- 后续建议：
+  - 视情况增加鉴权/登录与角色持久化
+
 ## [2026-01-10] 首页视频卡片点击直接播放
 - 背景/需求：首页视频动态点击应直接播放，非视频区域仍跳转详情
 - 修改类型：fix
