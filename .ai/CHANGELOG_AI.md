@@ -5,6 +5,36 @@
 
 ---
 
+## [2026-01-09] 引入本地真实图片资源用于预览测试
+- 背景/需求：测试图片点开后原比例展示，需要真实图片资源。
+- 修改类型：feat
+- 影响范围：Mock 数据 / 静态资源
+- 变更摘要：
+  1) 新增本地 demo 图片资源
+  2) imageStore 使用 demo 图片生成测试数据
+- 涉及文件：
+  - `sanguidaily-front/src/static/demo/img-01.png`
+  - `sanguidaily-front/src/static/demo/img-02.png`
+  - `sanguidaily-front/src/static/demo/img-03.png`
+  - `sanguidaily-front/src/static/demo/img-04.png`
+  - `sanguidaily-front/src/static/demo/img-05.png`
+  - `sanguidaily-front/src/static/demo/img-06.png`
+  - `sanguidaily-front/src/static/demo/img-07.png`
+  - `sanguidaily-front/src/static/demo/img-08.png`
+  - `sanguidaily-front/src/static/demo/img-09.png`
+  - `sanguidaily-front/src/static/demo/img-10.png`
+  - `sanguidaily-front/src/stores/imageStore.js`
+- 检索与复用策略：
+  - 检索关键词：imageStore / static
+  - 找到的旧实现：logo.png 占位图
+  - 最终选择：新增本地 demo 图片替换占位
+- 风险点：
+  - 静态资源体积增加
+- 验证方式：
+  - 手动点开预览查看原比例（未执行）
+- 后续建议：
+  - 如需更丰富测试可补充更多分辨率图片
+
 ## [2026-01-09] 修复多图预览比例为正方形
 - 背景/需求：多张图片预览仍为长条形，仅单图正常。
 - 修改类型：fix
