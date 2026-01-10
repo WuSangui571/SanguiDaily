@@ -5,6 +5,48 @@
 
 ---
 
+## [2026-01-10] 更新.gitignore以避免提交后端配置
+- 背景/需求：明确禁止提交后端配置文件
+- 修改类型：docs
+- 影响范围：工程配置
+- 变更摘要：
+  1) 将后端 application*.properties/yml/yaml 加入忽略清单
+- 涉及文件：
+  - `.gitignore`
+- 检索与复用策略：
+  - 检索关键词：.gitignore / application.properties
+  - 找到的旧实现：仅忽略 application-local/dev/prod/test
+  - 最终选择：补充忽略主配置文件与 yml/yaml
+- 风险点：
+  - 已被跟踪的文件仍需手动取消跟踪
+- 验证方式：
+  - `git status` 检查配置文件是否仍被跟踪（未执行）
+- 后续建议：
+  - 如需示例配置，提供 `application.properties.example`
+
+## [2026-01-10] 合并种子数据到主SQL并配置本地连接
+- 背景/需求：将前端示例数据合并进主 SQL，确保中文不乱码；后端与前端配置本地联通
+- 修改类型：feat
+- 影响范围：数据库初始化 / 后端配置 / 前端配置
+- 变更摘要：
+  1) 将 `sanguidaily_seed.sql` 的数据插入合并至 `sanguidaily_db.sql`
+  2) 后端 `application.properties` 写入本地数据库连接示例
+  3) 前端新增 `.env.development` 设置 API Base
+- 涉及文件：
+  - `sanguidaily_db.sql`
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-front/.env.development`
+- 检索与复用策略：
+  - 检索关键词：sanguidaily_seed.sql / sanguidaily_db.sql / application.properties / api base
+  - 找到的旧实现：已有空数据块的数据库结构 SQL
+  - 最终选择：在原 SQL 的 data 段插入 seed 数据
+- 风险点：
+  - 需替换 `spring.datasource.password` 与前端 API Base
+- 验证方式：
+  - 导入 `sanguidaily_db.sql` 并启动后端进行接口读取（未执行）
+- 后续建议：
+  - 若需生产环境，添加 `.env.production`
+
 ## [2026-01-10] 初始化后端接口并联通前端
 - 背景/需求：后端空白，需要提供基础 API 并替换前端 Mock 数据，整理可导入 SQL 种子
 - 修改类型：feat
