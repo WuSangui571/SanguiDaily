@@ -5,6 +5,47 @@
 
 ---
 
+## [2026-01-10] 链接动态改为 WebView 跳转
+- 背景/需求：微信小程序需实际跳转外部链接
+- 修改类型：fix
+- 影响范围：前端组件 / 页面配置
+- 变更摘要：
+  1) 链接卡片点击改为跳转到 WebView 页面
+  2) 新增 WebView 页面并加入 pages.json
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostLinkCard.vue`
+  - `sanguidaily-front/src/pages/webview/index.vue`
+  - `sanguidaily-front/src/pages.json`
+- 检索与复用策略：
+  - 检索关键词：PostLinkCard / web-view / pages.json
+  - 找到的旧实现：弹窗提示“示例阶段不跳转”
+  - 最终选择：新增 WebView 页面并复用 navigateTo
+- 风险点：
+  - 需在小程序业务域名中配置 https://www.sangui.top/
+- 验证方式：
+  - 真机点击链接卡片打开 WebView 并加载博客（未执行）
+- 后续建议：
+  - 如需 H5/APP 兼容，可按平台差异处理跳转
+
+## [2026-01-10] 更新链接动态为博客地址
+- 背景/需求：示例链接类型动态改为博客地址用于跳转测试
+- 修改类型：fix
+- 影响范围：Mock 数据
+- 变更摘要：
+  1) 将链接类型动态 link_url 改为 https://www.sangui.top/
+- 涉及文件：
+  - sanguidaily-front/src/stores/postStore.js
+- 检索与复用策略：
+  - 检索关键词：link_url / PostStore / 链接
+  - 找到的旧实现：示例链接地址 https://example.com
+  - 最终选择：直接替换示例链接地址
+- 风险点：
+  - 现有链接卡片仍为“示例阶段不跳转”弹窗，需另行改为真实跳转
+- 验证方式：
+  - 打开链接类型动态确认链接地址显示（未执行）
+- 后续建议：
+  - 如需实际跳转，可在链接卡片中使用 navigateToMiniProgram 或 openURL 能力（需明确平台）
+
 ## [2026-01-10] 去掉查看详情按钮并支持空白区点击
 - 背景/需求：去掉“查看详情”按钮，改为空白区域点击等价查看详情
 - 修改类型：fix
@@ -1025,6 +1066,8 @@
   - ...
 
 ---
+
+
 
 
 
