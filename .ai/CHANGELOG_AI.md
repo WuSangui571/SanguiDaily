@@ -5,6 +5,64 @@
 
 ---
 
+## [2026-01-10] 改用ObjectMapper配置避免Jackson2ObjectMapperBuilderCustomizer缺失
+- 背景/需求：编译报 Jackson2ObjectMapperBuilderCustomizer 不存在
+- 修改类型：fix
+- 影响范围：后端 Jackson 配置
+- 变更摘要：
+  1) 使用 ObjectMapper + JavaTimeModule 进行时间与命名策略配置
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/config/JacksonConfig.java`
+- 检索与复用策略：
+  - 检索关键词：Jackson2ObjectMapperBuilderCustomizer / ObjectMapper / JavaTimeModule
+  - 找到的旧实现：依赖 autoconfigure 的自定义器
+  - 最终选择：直接构造 ObjectMapper，降低依赖耦合
+- 风险点：
+  - application.properties 中的 Jackson 配置可能被此配置覆盖
+- 验证方式：
+  - 重新构建后端（未执行）
+- 后续建议：
+  - 如需更细粒度定制，可统一在此配置中管理
+
+## [2026-01-10] 补充spring-boot-autoconfigure依赖
+- 背景/需求：仍报 `org.springframework.boot.autoconfigure.jackson` 不存在
+- 修改类型：fix
+- 影响范围：后端依赖
+- 变更摘要：
+  1) 直接引入 `spring-boot-autoconfigure` 保障 Jackson 配置类可用
+- 涉及文件：
+  - `sanguidaily-back/pom.xml`
+- 检索与复用策略：
+  - 检索关键词：autoconfigure / jackson / pom.xml
+  - 找到的旧实现：web starter 未在编译器中生效
+  - 最终选择：显式添加 autoconfigure 依赖
+- 风险点：
+  - 依赖体积略增
+- 验证方式：
+  - 重新构建后端（未执行）
+- 后续建议：
+  - 如仍报错，检查 Maven 依赖刷新与 IDE 缓存
+
+## [2026-01-10] 切换到spring-boot-starter-web以修复autoconfigure缺失
+- 背景/需求：编译报 `org.springframework.boot.autoconfigure.jackson` 不存在
+- 修改类型：fix
+- 影响范围：后端依赖
+- 变更摘要：
+  1) 将 webmvc starter 替换为 web starter，补齐 autoconfigure 依赖
+  2) 测试依赖改为 spring-boot-starter-test
+- 涉及文件：
+  - `sanguidaily-back/pom.xml`
+- 检索与复用策略：
+  - 检索关键词：spring-boot-starter-webmvc / autoconfigure / Jackson2ObjectMapperBuilderCustomizer
+  - 找到的旧实现：仅 webmvc starter，缺少 autoconfigure
+  - 最终选择：切换到 web starter 保持最小改动
+- 风险点：
+  - 依赖体积略增
+- 验证方式：
+  - 重新构建后端（未执行）
+- 后续建议：
+  - 若需更轻量，可改为显式引入 spring-boot-autoconfigure
+
 ## [2026-01-10] 更新.gitignore以避免提交后端配置
 - 背景/需求：明确禁止提交后端配置文件
 - 修改类型：docs

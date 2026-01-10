@@ -50,7 +50,6 @@ CREATE TABLE `t_post` (
 
 LOCK TABLES `t_post` WRITE;
 /*!40000 ALTER TABLE `t_post` DISABLE KEYS */;
-/*!40000 
 INSERT INTO t_post (id, author_id, type, content_text, link_url, link_title, link_cover_url, link_site_name, video_url, video_cover_url, status, is_pinned, pinned_at, like_count, created_at, updated_at, deleted_at) VALUES
   (1001, 1, 0, '早起一杯热茶，窗外是安静的冬日。今天开始做三桂日常的小程序示例，把朋友圈的熟悉感做得更克制一些。长文本也要能展开，方便记录更完整的想法。', '', '', '', '', '', '', 0, 1, '2026-01-09 09:30:00', 12, '2026-01-08 21:18:00', '2026-01-08 21:18:00', NULL),
   (1002, 1, 1, '冬日散步的几张照片。', '', '', '', '', '', '', 0, 0, NULL, 5, '2026-01-09 08:30:00', '2026-01-09 08:30:00', NULL),
@@ -68,7 +67,7 @@ INSERT INTO t_post (id, author_id, type, content_text, link_url, link_title, lin
   (1014, 1, 1, '图片动态：9 张', '', '', '', '', '', '', 0, 0, NULL, 5, '2026-01-09 06:30:00', '2026-01-09 06:30:00', NULL),
   (1015, 1, 1, '图片动态：10 张（测试 +x）', '', '', '', '', '', '', 0, 0, NULL, 6, '2026-01-09 06:20:00', '2026-01-09 06:20:00', NULL);
 
-ALTER TABLE `t_post` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_post` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -98,7 +97,6 @@ CREATE TABLE `t_post_image` (
 
 LOCK TABLES `t_post_image` WRITE;
 /*!40000 ALTER TABLE `t_post_image` DISABLE KEYS */;
-/*!40000 
 INSERT INTO t_post_image (post_id, image_url, sort_order, width, height, size_bytes) VALUES
   (1002, 'https://sangui.top/uploads/covers/20260107/c5ef6deb900a48ac950105e69f78e974/9d8e8f46-b520-4df3-8553-ae59d8b19a40.png', 1, 0, 0, 0),
   (1002, 'https://sangui.top/uploads/covers/20260103/dd57a21ca9334e17a4d97d2fc511bebc/08e664a3-7273-410d-8551-1cce059817d0.png', 2, 0, 0, 0),
@@ -163,7 +161,7 @@ INSERT INTO t_post_image (post_id, image_url, sort_order, width, height, size_by
   (1015, 'https://sangui.top/uploads/covers/20251214/270c964887344a0f8ab57c542adf338f/46676735-378c-4215-b6fc-2a9eb94198e2.png', 9, 0, 0, 0),
   (1015, 'https://sangui.top/uploads/covers/20260107/c5ef6deb900a48ac950105e69f78e974/9d8e8f46-b520-4df3-8553-ae59d8b19a40.png', 10, 0, 0, 0);
 
-ALTER TABLE `t_post_image` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_post_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -190,12 +188,11 @@ CREATE TABLE `t_post_like` (
 
 LOCK TABLES `t_post_like` WRITE;
 /*!40000 ALTER TABLE `t_post_like` DISABLE KEYS */;
-/*!40000 
 INSERT INTO t_post_like (post_id, user_id, created_at) VALUES
   (1001, 1, '2026-01-08 21:20:00'),
   (1002, 1, '2026-01-09 08:35:00');
 
-ALTER TABLE `t_post_like` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_post_like` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -225,11 +222,10 @@ CREATE TABLE `t_user` (
 
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-/*!40000 
 INSERT INTO t_user (id, openid, role, nickname, avatar_url, created_at, updated_at, last_login_at) VALUES
   (1, 'mock-openid-001', 'OWNER', 'Čýšđ', '', '2026-01-09 08:00:00', '2026-01-09 08:00:00', '2026-01-09 08:00:00');
 
-ALTER TABLE `t_user` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
