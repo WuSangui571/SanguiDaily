@@ -5,6 +5,86 @@
 
 ---
 
+## [2026-01-10] WebView 路由参数兼容 target/url
+- 背景/需求：点击链接后 WebView 显示“链接地址为空”
+- 修改类型：fix
+- 影响范围：前端组件 / 页面
+- 变更摘要：
+  1) 跳转参数改为 target，WebView 同时兼容 url
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostLinkCard.vue`
+  - `sanguidaily-front/src/pages/webview/index.vue`
+- 检索与复用策略：
+  - 检索关键词：webview / onLoad / options.url
+  - 找到的旧实现：仅读取 url 参数
+  - 最终选择：增加 target 参数并兼容读取
+- 风险点：
+  - 无
+- 验证方式：
+  - 真机点击链接卡片可正确打开（未执行）
+- 后续建议：
+  - 如需额外调试可临时显示 options 内容
+
+## [2026-01-10] 修复 PostCard 方法块括号导致的编译错误
+- 背景/需求：构建报 Unexpected token
+- 修改类型：fix
+- 影响范围：前端组件
+- 变更摘要：
+  1) 修正 PostCard methods 结束括号
+- 涉及文件：
+  - sanguidaily-front/src/components/PostCard.vue
+- 检索与复用策略：
+  - 检索关键词：PostCard / methods / Unexpected token
+  - 找到的旧实现：多余的右花括号
+  - 最终选择：移除多余括号
+- 风险点：
+  - 无
+- 验证方式：
+  - 重新构建不再报语法错误（未执行）
+- 后续建议：
+  - 无
+
+## [2026-01-10] 修复 pages.json BOM 导致解析失败
+- 背景/需求：真机编译报 pages.json 非法 JSON（Unexpected token BOM）
+- 修改类型：fix
+- 影响范围：前端配置
+- 变更摘要：
+  1) 移除 pages.json 文件 BOM，恢复 JSON 解析
+- 涉及文件：
+  - sanguidaily-front/src/pages.json
+- 检索与复用策略：
+  - 检索关键词：pages.json / BOM / JSON 解析失败
+  - 找到的旧实现：UTF-8 带 BOM
+  - 最终选择：移除 BOM，保留文件内容
+- 风险点：
+  - 无
+- 验证方式：
+  - 重新运行构建看是否仍报 JSON 错误（未执行）
+- 后续建议：
+  - 避免使用会写入 BOM 的工具覆写 JSON
+
+## [2026-01-10] 链接点击无响应提示与事件修正
+- 背景/需求：真机点击链接卡片无反应，需要可见反馈
+- 修改类型：fix
+- 影响范围：前端组件
+- 变更摘要：
+  1) 链接卡片点击使用 stop 并保留跳转
+  2) 跳转失败时提示“检查业务域名”
+  3) 卡片媒体区点击使用空处理避免吞掉事件
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostLinkCard.vue`
+  - `sanguidaily-front/src/components/PostCard.vue`
+- 检索与复用策略：
+  - 检索关键词：PostLinkCard / tap / navigateTo / stop
+  - 找到的旧实现：仅 navigateTo，无失败反馈
+  - 最终选择：增加失败提示并显式 stop
+- 风险点：
+  - 仍需配置小程序业务域名才可打开 WebView
+- 验证方式：
+  - 真机点击链接卡片可跳转或有失败提示（未执行）
+- 后续建议：
+  - 如需更明确错误，可在 fail 回调打印详细错误码
+
 ## [2026-01-10] 链接动态改为 WebView 跳转
 - 背景/需求：微信小程序需实际跳转外部链接
 - 修改类型：fix
@@ -1066,6 +1146,10 @@
   - ...
 
 ---
+
+
+
+
 
 
 
