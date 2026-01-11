@@ -60,8 +60,12 @@
 - `GET /api/posts`
 - `GET /api/posts/{id}`
 - `POST /api/posts`
+- `PUT /api/posts/{id}`
+- `PATCH /api/posts/{id}/pin`
+- `PATCH /api/posts/{id}/status`
 - `GET /api/post-images`
 - `POST /api/post-images/batch`
+- `PUT /api/post-images/replace`
 - `GET /api/post-likes`
 - `POST /api/post-likes`
 - `DELETE /api/post-likes`

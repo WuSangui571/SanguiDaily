@@ -21,4 +21,12 @@ public class PostImageService {
     public void createImages(List<PostImage> images) {
         postImageRepository.insertBatch(images);
     }
+
+    public void replaceImages(Long postId, List<PostImage> images) {
+        if (postId == null) {
+            return;
+        }
+        postImageRepository.deleteByPostId(postId);
+        postImageRepository.insertBatch(images);
+    }
 }

@@ -1,6 +1,7 @@
 package com.sangui.sanguidaily.repository;
 
 import com.sangui.sanguidaily.dto.PostCreateRequest;
+import com.sangui.sanguidaily.dto.PostUpdateRequest;
 import com.sangui.sanguidaily.model.Post;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,6 +77,56 @@ public class PostRepository {
             throw new IllegalStateException("Failed to create post");
         }
         return findVisibleById(id, "OWNER").orElseThrow(() -> new IllegalStateException("Post not found"));
+    }
+
+    public Optional<Post> updatePost(Long id, PostUpdateRequest request) {
+        String sql = """
+            update t_post set
+                type = ?,
+                content_text = ?,
+                link_url = ?,
+                link_title = ?,
+                link_cover_url = ?,
+                link_site_name = ?,
+                video_url = ?,
+                video_cover_url = ?,
+                status = ?,
+                updated_at = now(3)
+            where id = ?
+            """;
+        jdbcTemplate.update(
+            sql,
+            request.type(),
+            request.contentText(),
+            request.linkUrl(),
+            request.linkTitle(),
+            request.linkCoverUrl(),
+            request.linkSiteName(),
+            request.videoUrl(),
+            request.videoCoverUrl(),
+            request.status(),
+            id
+        );
+        return findVisibleById(id, "OWNER");
+    }
+
+    public Optional<Post> updatePinned(Long id, boolean pinned) {
+        jdbcTemplate.update(
+            "update t_post set is_pinned = ?, pinned_at = ?, updated_at = now(3) where id = ?",
+            pinned ? 1 : 0,
+            pinned ? LocalDateTime.now() : null,
+            id
+        );
+        return findVisibleById(id, "OWNER");
+    }
+
+    public Optional<Post> updateStatus(Long id, Integer status) {
+        jdbcTemplate.update(
+            "update t_post set status = ?, updated_at = now(3) where id = ?",
+            status,
+            id
+        );
+        return findVisibleById(id, "OWNER");
     }
 
     public int incrementLikeCount(Long postId) {

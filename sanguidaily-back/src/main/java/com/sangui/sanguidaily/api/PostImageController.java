@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,6 +61,31 @@ public class PostImageController {
         }
         postImageService.createImages(images);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/replace")
+    public ResponseEntity<Void> replaceImages(@RequestBody PostImageBatchRequest request) {
+        List<String> urls = request.imageUrls() == null ? List.of() : request.imageUrls();
+        List<PostImage> images = new ArrayList<>();
+        for (int i = 0; i < urls.size(); i += 1) {
+            String url = urls.get(i);
+            if (url == null || url.isBlank()) {
+                continue;
+            }
+            images.add(new PostImage(
+                null,
+                request.postId(),
+                url,
+                i + 1,
+                0,
+                0,
+                0,
+                null,
+                null
+            ));
+        }
+        postImageService.replaceImages(request.postId(), images);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     private List<Long> resolvePostIds(Long postId, String postIds) {

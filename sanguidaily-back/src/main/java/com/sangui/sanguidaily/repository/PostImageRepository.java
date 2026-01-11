@@ -50,6 +50,13 @@ public class PostImageRepository {
         });
     }
 
+    public void deleteByPostId(Long postId) {
+        if (postId == null) {
+            return;
+        }
+        jdbcTemplate.update("delete from t_post_image where post_id = ?", postId);
+    }
+
     private RowMapper<PostImage> postRowMapper() {
         return (rs, rowNum) -> mapPostImage(rs);
     }

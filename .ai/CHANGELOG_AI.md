@@ -5,6 +5,43 @@
 
 ---
 
+## [2026-01-11] 动态卡片双击点赞与作者左滑操作
+- 背景/需求：首页单击进入详情，双击点赞；作者左滑可置顶/设为私密/修改动态
+- 修改类型：feat
+- 影响范围：前端动态卡片交互 / 后端动态更新接口
+- 变更摘要：
+  1) 动态卡片支持双击点赞，单击进入详情（非图片区域）
+  2) 作者在列表页左滑显示置顶/私密/修改入口
+  3) 新增动态更新/置顶/可见性后端接口与图片替换接口
+  4) 发布页支持编辑已有动态
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostCard.vue`
+  - `sanguidaily-front/src/components/PostSwipeItem.vue`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/composer/index.vue`
+  - `sanguidaily-front/src/stores/postStore.js`
+  - `sanguidaily-front/src/stores/imageStore.js`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/PostController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/PostImageController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/PostService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/PostRepository.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/PostImageRepository.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/PostUpdateRequest.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/PostPinRequest.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/PostStatusRequest.java`
+- 检索与复用策略：
+  - 检索关键词：PostCard / toggle-like / view-detail / pin / status / swipe
+  - 找到的旧实现：仅有点赞与详情跳转，无左滑与更新接口
+  - 最终选择：复用现有卡片与 store 扩展交互，新增最小接口
+- 风险点：
+  - 左滑与点击手势可能存在冲突，需要真机验证
+  - 更新接口需携带有效登录态（OWNER）
+- 验证方式：
+  - 首页单击进详情、双击点赞、左滑操作（未执行）
+  - 编辑动态并刷新列表（未执行）
+- 后续建议：
+  - 如需更复杂编辑，可扩展图片替换能力与权限校验
+
 ## [2026-01-11] 详情页时间改为完整日期时间格式
 - 背景/需求：详情页时间需显示“yyyy年MM月dd日 HH:mm”，列表页保留相对时间
 - 修改类型：fix

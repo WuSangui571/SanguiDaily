@@ -83,22 +83,12 @@ sanguidaily-back/**/*.jar
 sanguidaily-back/**/*.war
 
 # Spring Boot runtime / local configs (do not commit)
-sanguidaily-back/src/main/resources/application.properties
-sanguidaily-back/src/main/resources/application.yml
-sanguidaily-back/src/main/resources/application.yaml
-sanguidaily-back/src/main/resources/application-local.yml
-sanguidaily-back/src/main/resources/application-local.yaml
-sanguidaily-back/src/main/resources/application-dev.yml
-sanguidaily-back/src/main/resources/application-dev.yaml
-sanguidaily-back/src/main/resources/application-prod.yml
-sanguidaily-back/src/main/resources/application-prod.yaml
-sanguidaily-back/src/main/resources/application-test.yml
-sanguidaily-back/src/main/resources/application-test.yaml
-
-sanguidaily-back/src/main/resources/application-local.properties
-sanguidaily-back/src/main/resources/application-dev.properties
-sanguidaily-back/src/main/resources/application-prod.properties
-sanguidaily-back/src/main/resources/application-test.properties
+sanguidaily-back/src/main/resources/*.properties
+sanguidaily-back/src/main/resources/*.yml
+sanguidaily-back/src/main/resources/*.yaml
+sanguidaily-back/src/main/resources/config/
+!sanguidaily-back/src/main/resources/*.example.*
+!sanguidaily-back/src/main/resources/*.sample.*
 
 # JVM crash logs
 hs_err_pid*
