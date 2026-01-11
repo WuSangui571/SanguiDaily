@@ -56,6 +56,7 @@
 
 ### 4.2 后端 API（已落地）
 - `GET /api/users/current`
+- `POST /api/auth/wechat`
 - `GET /api/posts`
 - `GET /api/posts/{id}`
 - `POST /api/posts`
@@ -64,6 +65,14 @@
 - `GET /api/post-likes`
 - `POST /api/post-likes`
 - `DELETE /api/post-likes`
+
+### 4.3 登录与鉴权（已落地）
+- 微信登录：前端 code + 昵称/头像 -> 后端换取 openid 并注册/登录
+- JWT：后端签发 Bearer token，`/api/users/current` 校验 token
+- 相关配置：
+  - `wechat.appid` / `wechat.secret`
+  - `app.jwt.secret` / `app.jwt.expire-days`
+  - `app.owner-openid`（匹配则为 OWNER）
 
 ---
 

@@ -5,6 +5,42 @@
 
 ---
 
+## [2026-01-11] 新增微信登录与JWT基础流程
+- 背景/需求：使用微信登录（无密码），后端签发JWT并校验；未登录默认访客
+- 修改类型：feat
+- 影响范围：后端登录接口 / 用户模块 / 前端登录态
+- 变更摘要：
+  1) 新增 /api/auth/wechat 登录接口，支持微信 code 换取 openid 并注册/登录
+  2) 新增 JWT 签发与校验，/api/users/current 支持 Bearer token
+  3) 前端接入微信登录、token 存储与请求头注入，未登录返回访客
+- 涉及文件：
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/AuthController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/UserController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/JwtService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/WechatAuthService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UserService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/UserRepository.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/AuthResponse.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/WechatLoginRequest.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/WechatSessionResponse.java`
+  - `sanguidaily-front/src/utils/api.js`
+  - `sanguidaily-front/src/stores/userStore.js`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/me/index.vue`
+- 检索与复用策略：
+  - 检索关键词：login / auth / openid / token / userStore / t_user
+  - 找到的旧实现：`/api/users/current`、`UserService`、`userStore`
+  - 最终选择：在既有用户链路上扩展登录与JWT，避免新增重复模块
+- 风险点：
+  - 需填写 wechat.appid/secret 与 jwt.secret，否则登录失败
+  - JWT 失效将导致 /api/users/current 返回 401
+- 验证方式：
+  - 小程序端微信登录后返回用户信息与 token（未执行）
+  - 携带 token 调用 /api/users/current 返回用户（未执行）
+- 后续建议：
+  - 后端接口逐步使用 JWT 识别用户，避免前端传 userId
+
 ## [2026-01-10] 改用ObjectMapper配置避免Jackson2ObjectMapperBuilderCustomizer缺失
 - 背景/需求：编译报 Jackson2ObjectMapperBuilderCustomizer 不存在
 - 修改类型：fix
