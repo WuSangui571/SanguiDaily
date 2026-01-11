@@ -33,14 +33,18 @@ public class WechatAuthService {
 
     public WechatSessionResponse exchangeCode(String code) {
         if (code == null || code.isBlank()) {
-            throw new IllegalArgumentException("code is required");
+            throw new IllegalArgumentException("登录失败：未获取到code");
+        }
+        String trimmedCode = code.trim();
+        if ("the code is a mock one".equalsIgnoreCase(trimmedCode)) {
+            throw new IllegalArgumentException("当前环境不支持微信登录，请在微信小程序真机环境测试");
         }
         URI uri = UriComponentsBuilder.fromUriString("https://api.weixin.qq.com/sns/jscode2session")
             .queryParam("appid", appid)
             .queryParam("secret", secret)
-            .queryParam("js_code", code)
+            .queryParam("js_code", trimmedCode)
             .queryParam("grant_type", "authorization_code")
-            .build(true)
+            .build()
             .encode(StandardCharsets.UTF_8)
             .toUri();
         RequestEntity<Void> request = RequestEntity.get(uri).build();

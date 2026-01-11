@@ -5,6 +5,27 @@
 
 ---
 
+## [2026-01-11] 修复微信登录在模拟 code 下的请求异常
+- 背景/需求：非小程序环境返回 “the code is a mock one”，导致后端构建 URL 报错
+- 修改类型：fix
+- 影响范围：后端微信登录 / 前端登录提示
+- 变更摘要：
+  1) 后端构建微信登录 URL 改为安全编码，并识别 mock code 直接提示
+  2) 前端识别 mock code 提示需在微信小程序真机环境测试
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/WechatAuthService.java`
+  - `sanguidaily-front/src/stores/userStore.js`
+- 检索与复用策略：
+  - 检索关键词：wechat code / mock / UriComponentsBuilder
+  - 找到的旧实现：`WechatAuthService.exchangeCode` 直接拼接 code
+  - 最终选择：编码 URL 并在前后端拦截 mock code
+- 风险点：
+  - 若仍在非小程序环境测试，会持续提示不可登录
+- 验证方式：
+  - 小程序真机登录，确保不出现 mock code 提示（未执行）
+- 后续建议：
+  - 若需 H5 登录，增加对应平台授权方式
+
 ## [2026-01-11] 新增微信登录与JWT基础流程
 - 背景/需求：使用微信登录（无密码），后端签发JWT并校验；未登录默认访客
 - 修改类型：feat
