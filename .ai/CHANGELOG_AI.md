@@ -14,6 +14,8 @@
   2) 作者在列表页左滑显示置顶/私密/修改入口
   3) 新增动态更新/置顶/可见性后端接口与图片替换接口
   4) 发布页支持编辑已有动态
+  5) 同时只允许一个左滑展开，隐藏提示角标并优化按钮样式
+  6) 左滑操作按钮改为图标展示
 - 涉及文件：
   - `sanguidaily-front/src/components/PostCard.vue`
   - `sanguidaily-front/src/components/PostSwipeItem.vue`
