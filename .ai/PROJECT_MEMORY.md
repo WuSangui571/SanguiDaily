@@ -69,6 +69,8 @@
 - `GET /api/post-likes`
 - `POST /api/post-likes`
 - `DELETE /api/post-likes`
+- `POST /api/uploads/image`
+- `POST /api/uploads/video`
 
 ### 4.3 登录与鉴权（已落地）
 - 微信登录：前端 code + 昵称/头像 -> 后端换取 openid 并注册/登录
@@ -77,6 +79,7 @@
   - `wechat.appid` / `wechat.secret`
   - `app.jwt.secret` / `app.jwt.expire-days`
   - `app.owner-openid`（匹配则为 OWNER）
+  - `app.upload-root`（上传文件根目录）
 
 ---
 

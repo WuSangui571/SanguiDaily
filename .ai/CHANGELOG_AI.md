@@ -5,6 +5,36 @@
 
 ---
 
+## [2026-01-11] 图片/视频上传落盘与前端发布接入
+- 背景/需求：发布图片/视频动态需要上传到后端 uploads 目录并分类存储
+- 修改类型：feat
+- 影响范围：后端上传接口 / 前端发布页 / 静态资源访问
+- 变更摘要：
+  1) 新增图片/视频上传接口，按日期分类存储到 `uploads/images|videos/yyyyMMdd`
+  2) 增加上传文件根目录配置 `app.upload-root`
+  3) 后端开放 `/uploads/**` 静态访问映射
+  4) 发布页选择图片/视频后自动上传并回填 URL
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/UploadController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UploadService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/config/WebConfig.java`
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-front/src/utils/api.js`
+  - `sanguidaily-front/src/pages/composer/index.vue`
+  - `.gitignore`
+- 检索与复用策略：
+  - 检索关键词：upload / uploads / post-images / video_url / composer
+  - 找到的旧实现：`PostImageController`、`imageStore`、`composer` 表单逻辑
+  - 最终选择：新增最小上传接口，前端复用发布页并接入上传
+- 风险点：
+  - 文件大小与域名白名单限制可能影响真机上传/播放
+  - 生产环境需确保上传目录可写
+- 验证方式：
+  - 发布页选择图片/视频后能返回可访问 URL（未执行）
+  - 页面显示上传后的图片/视频（未执行）
+- 后续建议：
+  - 如需更严格安全校验可增加 MIME 检测与大小限制
+
 ## [2026-01-11] 动态卡片双击点赞与作者左滑操作
 - 背景/需求：首页单击进入详情，双击点赞；作者左滑可置顶/设为私密/修改动态
 - 修改类型：feat
@@ -16,6 +46,7 @@
   4) 发布页支持编辑已有动态
   5) 同时只允许一个左滑展开，隐藏提示角标并优化按钮样式
   6) 左滑操作按钮改为图标展示
+  7) 置顶/可见性/编辑失败时提示更明确的错误原因
 - 涉及文件：
   - `sanguidaily-front/src/components/PostCard.vue`
   - `sanguidaily-front/src/components/PostSwipeItem.vue`
