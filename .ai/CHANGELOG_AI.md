@@ -5,6 +5,67 @@
 
 ---
 
+## [2026-01-11] 生成视频封面失败时增加诊断与兼容处理
+- 背景/需求：Windows 配置 ffmpeg 后仍无法生成封面
+- 修改类型：fix
+- 影响范围：后端视频封面生成
+- 变更摘要：
+  1) ffmpeg 命令增加错误级别输出，避免无日志失败
+  2) 读取输出内容并打印，便于排查路径/格式问题
+  3) 去除路径首尾引号，兼容 Windows 含空格路径
+  4) 截图时间改为 00:00:00 以兼容超短视频
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UploadService.java`
+- 检索与复用策略：
+  - 检索关键词：ffmpeg / cover / UploadService
+  - 找到的旧实现：直接执行 ffmpeg，无输出诊断
+  - 最终选择：在原方法内补充日志与容错
+- 风险点：
+  - 控制台日志可能略增
+- 验证方式：
+  - 上传短视频，查看后台输出与封面生成（未执行）
+
+## [2026-01-11] ffmpeg 路径改为 Linux 默认位置
+- 背景/需求：自动封面需在 Linux 服务器运行，配置 ffmpeg 路径
+- 修改类型：docs
+- 影响范围：后端配置
+- 变更摘要：
+  1) `app.ffmpeg-path` 改为 `/usr/bin/ffmpeg`
+- 涉及文件：
+  - `sanguidaily-back/src/main/resources/application.properties`
+- 检索与复用策略：
+  - 检索关键词：ffmpeg / app.ffmpeg-path / application.properties
+  - 找到的旧实现：`app.ffmpeg-path=ffmpeg`
+  - 最终选择：沿用配置项，调整为 Linux 默认路径
+- 风险点：
+  - 非 Linux 环境需改为本机 ffmpeg 路径
+- 验证方式：
+  - Linux 上执行 `which ffmpeg` 与上传封面生成（未执行）
+
+## [2026-01-11] 视频上传自动生成封面
+- 背景/需求：上传视频后自动生成封面图并存储
+- 修改类型：feat
+- 影响范围：后端上传接口 / 前端发布页
+- 变更摘要：
+  1) 视频上传后调用 ffmpeg 截图并保存封面
+  2) 上传返回值携带 coverUrl，前端自动回填封面
+  3) 新增 `app.ffmpeg-path` 配置支持自定义 ffmpeg 路径
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UploadService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/UploadController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/UploadResponse.java`
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-front/src/pages/composer/index.vue`
+  - `.ai/PROJECT_MEMORY.md`
+- 检索与复用策略：
+  - 检索关键词：UploadService / video_cover_url / video
+  - 找到的旧实现：视频上传仅返回 URL，不生成封面
+  - 最终选择：复用上传流程并扩展封面生成
+- 风险点：
+  - 依赖 ffmpeg 可执行文件，未配置时将不生成封面
+- 验证方式：
+  - 上传视频后自动回填封面 URL（未执行）
+
 ## [2026-01-11] 预览遮罩不被登录态卡片遮挡
 - 背景/需求：登录后打开图片预览会看到下一条动态卡片
 - 修改类型：fix

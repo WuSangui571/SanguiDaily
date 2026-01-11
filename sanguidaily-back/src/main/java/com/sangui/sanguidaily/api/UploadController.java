@@ -43,7 +43,7 @@ public class UploadController {
         try {
             UploadService.UploadResult result = uploadService.storeImage(file);
             String url = buildFileUrl(request, result.relativePath());
-            return ResponseEntity.ok(new UploadResponse(url, result.filename(), result.size()));
+            return ResponseEntity.ok(new UploadResponse(url, result.filename(), result.size(), null));
         } catch (IllegalArgumentException ex) {
             String message = ex.getMessage() == null ? "图片上传失败" : ex.getMessage();
             return ResponseEntity.badRequest().body(new ApiError(message));
@@ -65,7 +65,10 @@ public class UploadController {
         try {
             UploadService.UploadResult result = uploadService.storeVideo(file);
             String url = buildFileUrl(request, result.relativePath());
-            return ResponseEntity.ok(new UploadResponse(url, result.filename(), result.size()));
+            String coverUrl = result.coverRelativePath() == null
+                ? null
+                : buildFileUrl(request, result.coverRelativePath());
+            return ResponseEntity.ok(new UploadResponse(url, result.filename(), result.size(), coverUrl));
         } catch (IllegalArgumentException ex) {
             String message = ex.getMessage() == null ? "视频上传失败" : ex.getMessage();
             return ResponseEntity.badRequest().body(new ApiError(message));

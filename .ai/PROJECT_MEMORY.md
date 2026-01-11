@@ -80,6 +80,7 @@
   - `app.jwt.secret` / `app.jwt.expire-days`
   - `app.owner-openid`（匹配则为 OWNER）
   - `app.upload-root`（上传文件根目录）
+  - `app.ffmpeg-path`（生成视频封面的 ffmpeg 可执行路径）
 
 ---
 
