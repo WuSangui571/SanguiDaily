@@ -34,6 +34,10 @@ public class UserService {
     public User loginOrRegisterByWechat(String openid, String nickname, String avatarUrl) {
         String cleanNickname = normalizeText(nickname);
         String cleanAvatar = normalizeText(avatarUrl);
+        if (isPlaceholderNickname(cleanNickname)) {
+            cleanNickname = null;
+            cleanAvatar = null;
+        }
         Optional<User> existing = userRepository.findByOpenid(openid);
         LocalDateTime now = LocalDateTime.now();
         boolean isOwner = !ownerOpenid.isBlank() && ownerOpenid.equals(openid);
@@ -69,5 +73,9 @@ public class UserService {
         }
         String trimmed = value.trim();
         return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private boolean isPlaceholderNickname(String nickname) {
+        return "微信用户".equals(nickname);
     }
 }

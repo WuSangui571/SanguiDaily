@@ -14,6 +14,7 @@
   2) 发布入口仍在“我的”页的作者入口区
   3) 登录失败提示兼容 errMsg 等字段，避免只显示“登录失败”
   4) 微信登录改为点击后先取 userProfile，再调用登录，避免 getUserProfile 非点击触发报错
+  5) 避免用“微信用户”占位昵称覆盖既有昵称与头像
 - 涉及文件：
   - `sanguidaily-front/src/pages/feed/index.vue`
 - 检索与复用策略：
