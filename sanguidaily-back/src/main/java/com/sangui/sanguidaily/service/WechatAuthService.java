@@ -35,7 +35,7 @@ public class WechatAuthService {
         if (code == null || code.isBlank()) {
             throw new IllegalArgumentException("code is required");
         }
-        URI uri = UriComponentsBuilder.fromHttpUrl("https://api.weixin.qq.com/sns/jscode2session")
+        URI uri = UriComponentsBuilder.fromUriString("https://api.weixin.qq.com/sns/jscode2session")
             .queryParam("appid", appid)
             .queryParam("secret", secret)
             .queryParam("js_code", code)
@@ -49,14 +49,18 @@ public class WechatAuthService {
         try {
             WechatSessionResponse session = objectMapper.readValue(body, WechatSessionResponse.class);
             if (session.errcode() != null && session.errcode() != 0) {
-                throw new IllegalStateException("wechat login failed: " + session.errmsg());
+                String message = session.errmsg() == null ? "微信接口返回错误" : session.errmsg();
+                throw new IllegalStateException("微信登录失败(" + session.errcode() + "): " + message);
             }
             if (session.openid() == null || session.openid().isBlank()) {
-                throw new IllegalStateException("wechat login failed: openid missing");
+                throw new IllegalStateException("微信登录失败：未获取到openid");
             }
             return session;
         } catch (Exception ex) {
-            throw new IllegalStateException("wechat login failed: parse error", ex);
+            if (ex instanceof IllegalStateException) {
+                throw (IllegalStateException) ex;
+            }
+            throw new IllegalStateException("微信登录失败：响应解析异常", ex);
         }
     }
 }

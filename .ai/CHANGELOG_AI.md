@@ -13,6 +13,7 @@
   1) 新增 /api/auth/wechat 登录接口，支持微信 code 换取 openid 并注册/登录
   2) 新增 JWT 签发与校验，/api/users/current 支持 Bearer token
   3) 前端接入微信登录、token 存储与请求头注入，未登录返回访客
+  4) 登录失败返回明确错误信息，前端提示具体原因
 - 涉及文件：
   - `sanguidaily-back/src/main/resources/application.properties`
   - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/AuthController.java`

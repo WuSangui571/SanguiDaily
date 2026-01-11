@@ -1,12 +1,14 @@
 package com.sangui.sanguidaily.api;
 
 import com.sangui.sanguidaily.dto.AuthResponse;
+import com.sangui.sanguidaily.dto.ApiError;
 import com.sangui.sanguidaily.dto.WechatLoginRequest;
 import com.sangui.sanguidaily.dto.WechatSessionResponse;
 import com.sangui.sanguidaily.model.User;
 import com.sangui.sanguidaily.service.JwtService;
 import com.sangui.sanguidaily.service.UserService;
 import com.sangui.sanguidaily.service.WechatAuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/wechat")
-    public ResponseEntity<AuthResponse> loginByWechat(@RequestBody WechatLoginRequest request) {
+    public ResponseEntity<?> loginByWechat(@RequestBody WechatLoginRequest request) {
         try {
             WechatSessionResponse session = wechatAuthService.exchangeCode(request.code());
             User user = userService.loginOrRegisterByWechat(
@@ -43,7 +45,8 @@ public class AuthController {
             String token = jwtService.createToken(user.id(), user.openid(), user.role());
             return ResponseEntity.ok(new AuthResponse(token, user));
         } catch (IllegalArgumentException | IllegalStateException ex) {
-            return ResponseEntity.badRequest().build();
+            String message = ex.getMessage() == null ? "登录失败" : ex.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(message));
         }
     }
 }
