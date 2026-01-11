@@ -12,6 +12,7 @@
 - 变更摘要：
   1) 后端构建微信登录 URL 改为安全编码，并识别 mock code 直接提示
   2) 前端识别 mock code 提示需在微信小程序真机环境测试
+  3) 登录时强制获取微信昵称与头像，否则提示用户授权
 - 涉及文件：
   - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/WechatAuthService.java`
   - `sanguidaily-front/src/stores/userStore.js`
