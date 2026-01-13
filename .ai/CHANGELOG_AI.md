@@ -5,6 +5,67 @@
 
 ---
 
+## [2026-01-13] 首页置顶卡片与置顶页时间轴布局
+- 背景/需求：优化首页置顶展示，并重做置顶详情页布局
+- 修改类型：feat
+- 影响范围：前端首页 / 置顶页 / 组件
+- 变更摘要：
+  1) 首页新增置顶卡片，展示前三条置顶动态的缩略内容
+  2) 置顶页改为时间轴三列布局，支持点击进入动态详情
+  3) 图片九宫格支持关闭预览以复用为缩略图
+  4) postStore 新增获取置顶列表方法，供页面复用
+- 涉及文件：
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+  - `sanguidaily-front/src/components/PostImagesGrid.vue`
+  - `sanguidaily-front/src/stores/postStore.js`
+- 检索与复用策略：
+  - 检索关键词：置顶 / pinned / PostImagesGrid / pinned page / postStore
+  - 找到的旧实现：置顶页占位实现、PostImagesGrid 九宫格、postStore 置顶排序
+  - 最终选择：复用现有九宫格与 store，新增小量 UI 与方法
+- 风险点：
+  - 置顶页三列在小屏可能偏紧
+  - 无封面时显示占位需确认视觉效果
+- 验证方式：
+  - 首页置顶卡片可点击进入置顶页
+  - 置顶页点击条目进入详情页
+
+## [2026-01-11] 提升上传大小限制以避免 1MB 图片失败
+- 背景/需求：上传报 Maximum upload size exceeded，1MB 图片也失败
+- 修改类型：fix
+- 影响范围：后端上传配置
+- 变更摘要：
+  1) 设置 multipart 最大文件与请求大小为 200MB
+- 涉及文件：
+  - `sanguidaily-back/src/main/resources/application.properties`
+- 检索与复用策略：
+  - 检索关键词：multipart / max-file-size / application.properties
+  - 找到的旧实现：未配置上传大小，使用默认限制
+  - 最终选择：配置 Spring multipart 限制
+- 风险点：
+  - 服务器需确保磁盘与内存可承受大文件上传
+- 验证方式：
+  - 上传 1MB 图片与视频文件（未执行）
+
+## [2026-01-11] 上传失败提示与扩展名兜底
+- 背景/需求：图片/封面上传无提示且未入库
+- 修改类型：fix
+- 影响范围：前端上传提示 / 后端上传识别
+- 变更摘要：
+  1) 上传响应缺少 url 时提示失败
+  2) 后端扩展名无法识别时使用默认扩展并打印诊断
+- 涉及文件：
+  - `sanguidaily-front/src/pages/composer/index.vue`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UploadService.java`
+- 检索与复用策略：
+  - 检索关键词：uploadImages / uploadCover / UploadService
+  - 找到的旧实现：无 url 时不提示、扩展名严格校验
+  - 最终选择：在现有逻辑内补充兜底与提示
+- 风险点：
+  - 默认扩展可能与真实格式不一致
+- 验证方式：
+  - 上传图片/封面成功回填，失败时有提示（未执行）
+
 ## [2026-01-11] 上传文件类型识别兼容无扩展名文件
 - 背景/需求：上传图片/封面无提示失败，可能为文件名无扩展名
 - 修改类型：fix

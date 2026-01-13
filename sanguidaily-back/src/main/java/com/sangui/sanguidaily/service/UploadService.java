@@ -60,7 +60,15 @@ public class UploadService {
             throw new IllegalArgumentException(label + "文件不能为空");
         }
         String extension = resolveExtension(file, allowedExts);
+        if (extension.isEmpty()) {
+            extension = defaultExtension(allowedExts);
+        }
         if (extension.isEmpty() || !allowedExts.contains(extension)) {
+            String name = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            System.out.println(
+                label + "类型不支持: filename=" + name + ", contentType=" + contentType
+            );
             throw new IllegalArgumentException(label + "类型不支持");
         }
         String dateFolder = LocalDate.now().format(DATE_FORMAT);
@@ -179,6 +187,12 @@ public class UploadService {
             }
         }
         return extension;
+    }
+
+    private String defaultExtension(Set<String> allowedExts) {
+        if (allowedExts.contains("jpg")) return "jpg";
+        if (allowedExts.contains("mp4")) return "mp4";
+        return "";
     }
 
     private String resolveExtensionFromName(String name) {
