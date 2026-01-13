@@ -5,6 +5,49 @@
 
 ---
 
+## [2026-01-13] 置顶页排序时间与私密置顶限制
+- 背景/需求：置顶页按发布时间展示与排序；私密动态禁止置顶，置顶页左滑去掉私密按钮
+- 修改类型：fix
+- 影响范围：前端首页 / 置顶页 / 左滑组件
+- 变更摘要：
+  1) 置顶页时间线与排序改为使用发布时间
+  2) 首页置顶操作对私密动态给出提示并阻止置顶
+  3) 置顶页左滑隐藏“私密”按钮并同步缩短滑动宽度
+- 涉及文件：
+  - `sanguidaily-front/src/stores/postStore.js`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/components/PostSwipeItem.vue`
+- 检索与复用策略：
+  - 检索关键词：pinned / created_at / togglePin / PostSwipeItem
+  - 找到的旧实现：置顶页使用 pinned_at、左滑固定三按钮
+  - 最终选择：复用现有逻辑并增量调整
+- 风险点：
+  - 置顶页时间与排序变化需确认与预期一致
+- 验证方式：
+  - 置顶页时间与排序按发布时间显示
+  - 私密动态置顶时提示且不生效
+
+## [2026-01-13] 置顶页取消置顶即时移除与点赞UI更新
+- 背景/需求：取消置顶需立即从列表移除；点赞按钮改为爱心样式
+- 修改类型：fix
+- 影响范围：前端置顶页 / 点赞组件
+- 变更摘要：
+  1) 置顶页取消置顶时本地先行更新，立即从置顶列表移除
+  2) 点赞按钮改为“空心/实心爱心 + 数字”样式
+- 涉及文件：
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+  - `sanguidaily-front/src/components/LikeButton.vue`
+- 检索与复用策略：
+  - 检索关键词：togglePin / LikeButton / pinned page
+  - 找到的旧实现：置顶页依赖接口回填、点赞按钮使用文字图标
+  - 最终选择：本地乐观更新 + 复用 LikeButton 组件
+- 风险点：
+  - 置顶接口失败时会回滚本地状态
+- 验证方式：
+  - 置顶页取消置顶后立即消失
+  - 首页与详情页点赞按钮样式一致
+
 ## [2026-01-13] 修复小程序 :key 表达式与置顶页点击编译问题
 - 背景/需求：小程序编译报 :key 表达式不支持与事件解析报错
 - 修改类型：fix
