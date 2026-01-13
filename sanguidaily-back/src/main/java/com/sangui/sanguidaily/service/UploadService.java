@@ -59,7 +59,7 @@ public class UploadService {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException(label + "文件不能为空");
         }
-        String extension = resolveExtension(file.getOriginalFilename());
+        String extension = resolveExtension(file, allowedExts);
         if (extension.isEmpty() || !allowedExts.contains(extension)) {
             throw new IllegalArgumentException(label + "类型不支持");
         }
@@ -155,7 +155,33 @@ public class UploadService {
         return builder.toString().trim();
     }
 
-    private String resolveExtension(String name) {
+    private String resolveExtension(MultipartFile file, Set<String> allowedExts) {
+        if (file == null) {
+            return "";
+        }
+        String name = file.getOriginalFilename();
+        String extension = resolveExtensionFromName(name);
+        if (!extension.isEmpty() && allowedExts.contains(extension)) {
+            return extension;
+        }
+        String contentType = file.getContentType();
+        String mapped = resolveExtensionFromContentType(contentType);
+        if (!mapped.isEmpty() && allowedExts.contains(mapped)) {
+            return mapped;
+        }
+        if (contentType != null) {
+            String lower = contentType.toLowerCase(Locale.ROOT);
+            if (lower.startsWith("image/") && allowedExts.contains("jpg")) {
+                return "jpg";
+            }
+            if (lower.startsWith("video/") && allowedExts.contains("mp4")) {
+                return "mp4";
+            }
+        }
+        return extension;
+    }
+
+    private String resolveExtensionFromName(String name) {
         if (name == null || name.isBlank()) {
             return "";
         }
@@ -164,6 +190,24 @@ public class UploadService {
             return "";
         }
         return name.substring(index + 1).toLowerCase(Locale.ROOT);
+    }
+
+    private String resolveExtensionFromContentType(String contentType) {
+        if (contentType == null || contentType.isBlank()) {
+            return "";
+        }
+        String lower = contentType.toLowerCase(Locale.ROOT);
+        if (lower.contains("jpeg")) return "jpg";
+        if (lower.contains("png")) return "png";
+        if (lower.contains("gif")) return "gif";
+        if (lower.contains("webp")) return "webp";
+        if (lower.contains("bmp")) return "bmp";
+        if (lower.contains("mp4")) return "mp4";
+        if (lower.contains("quicktime")) return "mov";
+        if (lower.contains("webm")) return "webm";
+        if (lower.contains("x-msvideo")) return "avi";
+        if (lower.contains("x-matroska")) return "mkv";
+        return "";
     }
 
     private record StoredFile(String relativePath, String filename, long size, Path absolutePath, String dateFolder) {}
