@@ -5,6 +5,44 @@
 
 ---
 
+## [2026-01-13] 联系我二维码使用前端静态资源并修复保存
+- 背景/需求：联系我二维码显示/保存失败
+- 修改类型：fix
+- 影响范围：前端联系我页面
+- 变更摘要：
+  1) 二维码改为使用前端 `/static/WechatQR.jpg`
+  2) 本地静态图保存改用 getImageInfo + saveImageToPhotosAlbum
+- 涉及文件：
+  - `sanguidaily-front/src/pages/contact/index.vue`
+- 检索与复用策略：
+  - 检索关键词：WechatQR / static / saveImageToPhotosAlbum
+  - 找到的旧实现：通过后端 URL 下载二维码
+  - 最终选择：复用前端静态资源并补充保存逻辑
+- 风险点：
+  - 需要相册权限授权
+- 验证方式：
+  - 联系我页能显示二维码并可保存
+
+## [2026-01-13] 联系我二维码加载兜底与 GitHub 直接复制
+- 背景/需求：联系我二维码未显示；GitHub 链接需直接复制
+- 修改类型：fix
+- 影响范围：前端联系我/关于我页面
+- 变更摘要：
+  1) 联系我二维码加载失败时尝试 static 路径兜底
+  2) GitHub 点击改为直接复制并提示
+- 涉及文件：
+  - `sanguidaily-front/src/pages/contact/index.vue`
+  - `sanguidaily-front/src/pages/profile/index.vue`
+- 检索与复用策略：
+  - 检索关键词：WechatQR / static / GitHub link
+  - 找到的旧实现：二维码单一路径、GitHub 与个人站点同逻辑
+  - 最终选择：兜底路径 + 单独复制逻辑
+- 风险点：
+  - 若后端静态资源路径不同仍需调整
+- 验证方式：
+  - 联系我页能显示二维码
+  - GitHub 点击后直接复制并提示
+
 ## [2026-01-13] 头像样式统一与头像进入个人页
 - 背景/需求：头像改为圆角矩形，点击头像进入个人页与联系我页面
 - 修改类型：feat
