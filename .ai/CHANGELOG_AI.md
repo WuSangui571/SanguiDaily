@@ -5,6 +5,28 @@
 
 ---
 
+## [2026-01-13] 九宫格 key 去重与左滑按钮文字化
+- 背景/需求：修复重复 URL 引发的 key 冲突，左滑按钮图标异常
+- 修改类型：fix
+- 影响范围：前端九宫格组件 / 左滑组件 / 置顶页交互
+- 变更摘要：
+  1) 九宫格 key 改为预生成复合 key，避免重复 URL 冲突
+  2) 左滑按钮图标改为明确中文文字
+  3) 置顶页取消置顶成功后重置 activeSwipeId
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostImagesGrid.vue`
+  - `sanguidaily-front/src/components/PostSwipeItem.vue`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+- 检索与复用策略：
+  - 检索关键词：PostImagesGrid / key / PostSwipeItem / icon
+  - 找到的旧实现：key 使用 image_url、左滑图标异常字符
+  - 最终选择：复用现有组件，增量修正
+- 风险点：
+  - 复合 key 依赖 image_url/排序字段
+- 验证方式：
+  - 多图重复 URL 不再引发渲染异常
+  - 左滑按钮文字清晰可辨
+
 ## [2026-01-13] 置顶操作提示与列表反馈优化
 - 背景/需求：置顶/取消置顶需明确提示
 - 修改类型：fix
