@@ -5,6 +5,32 @@
 
 ---
 
+## [2026-01-13] 头像样式统一与头像进入个人页
+- 背景/需求：头像改为圆角矩形，点击头像进入个人页与联系我页面
+- 修改类型：feat
+- 影响范围：前端动态卡片 / 我的页 / 新增页面
+- 变更摘要：
+  1) 头像样式改为圆角矩形
+  2) 动态头像点击进入个人页
+  3) 新增“关于我/联系我”页面，支持打开外链与保存微信二维码
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostCard.vue`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/post-detail/index.vue`
+  - `sanguidaily-front/src/pages/me/index.vue`
+  - `sanguidaily-front/src/pages/profile/index.vue`
+  - `sanguidaily-front/src/pages/contact/index.vue`
+  - `sanguidaily-front/src/pages.json`
+- 检索与复用策略：
+  - 检索关键词：avatar / profile / webview
+  - 找到的旧实现：动态头像与我的页头像样式、webview 跳转逻辑
+  - 最终选择：复用现有链接打开方式，新增页面承载信息
+- 风险点：
+  - 微信二维码依赖后端静态资源路径正确
+- 验证方式：
+  - 点击动态头像进入个人页
+  - 联系我页显示二维码并可保存
+
 ## [2026-01-13] 置顶动态编辑时隐藏可见性设置
 - 背景/需求：置顶动态不可修改可见性，编辑时需隐藏该字段
 - 修改类型：fix
