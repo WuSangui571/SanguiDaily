@@ -5,6 +5,85 @@
 
 ---
 
+## [2026-01-13] 修复小程序 :key 表达式与置顶页点击编译问题
+- 背景/需求：小程序编译报 :key 表达式不支持与事件解析报错
+- 修改类型：fix
+- 影响范围：前端首页 / 置顶页 / 九宫格组件
+- 变更摘要：
+  1) 首页列表与置顶缩略 :key 改为简单标识
+  2) 九宫格 key 改为 image_url 并过滤无效图片
+  3) 置顶页点击事件改用 dataset 传参，避免编译器解析异常
+- 涉及文件：
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/components/PostImagesGrid.vue`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+- 检索与复用策略：
+  - 检索关键词：:key / mp-weixin / compile / PostImagesGrid
+  - 找到的旧实现：模板字面量 key 与复杂事件参数
+  - 最终选择：使用简单 key 与 dataset 传参
+- 风险点：
+  - image_url 重复时 key 可能冲突（概率低）
+- 验证方式：
+  - 小程序编译通过，进入置顶页无报错
+
+## [2026-01-13] 置顶页图片渲染容错修复
+- 背景/需求：进入置顶页报错，图片九宫格渲染时读到 undefined
+- 修改类型：fix
+- 影响范围：前端图片九宫格组件
+- 变更摘要：
+  1) 九宫格过滤无效图片项
+  2) key 生成增加兜底避免读取 undefined 字段
+- 涉及文件：
+  - `sanguidaily-front/src/components/PostImagesGrid.vue`
+- 检索与复用策略：
+  - 检索关键词：PostImagesGrid / post_id / undefined
+  - 找到的旧实现：九宫格默认直接使用 image.post_id 与 sort_order
+  - 最终选择：在原组件内补充兜底逻辑
+- 风险点：
+  - 若后端返回空对象会被过滤不展示
+- 验证方式：
+  - 进入置顶页不再报错
+
+## [2026-01-13] 修复置顶页年份卡片导致的渲染错误
+- 背景/需求：进入置顶页报错，年份卡片渲染时错误访问动态字段
+- 修改类型：fix
+- 影响范围：前端置顶页
+- 变更摘要：
+  1) 年份卡片仅渲染年份节点，不再触发动态卡片/左滑容器
+- 涉及文件：
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+- 检索与复用策略：
+  - 检索关键词：pinned / year card / PostSwipeItem / undefined
+  - 找到的旧实现：年份卡片与动态卡片并列渲染
+  - 最终选择：为年份卡片增加排他分支避免渲染动态组件
+- 风险点：
+  - 无
+- 验证方式：
+  - 进入置顶页不再报错
+
+## [2026-01-13] 置顶页链接布局与左滑操作补全
+- 背景/需求：首页置顶缩略链接显示文本说明；置顶页链接类型展示为“文本+链接卡片”，并支持作者左滑操作
+- 修改类型：feat
+- 影响范围：前端首页置顶卡片 / 置顶页 / 链接卡片组件
+- 变更摘要：
+  1) 首页置顶缩略对链接类型优先显示动态文本说明
+  2) 置顶页链接类型改为“上文本+下链接卡片”，点击仍进入详情页
+  3) 置顶页支持作者左滑（置顶/私密/编辑）
+  4) 链接卡片支持禁用打开并允许点击透传
+- 涉及文件：
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+  - `sanguidaily-front/src/components/PostLinkCard.vue`
+- 检索与复用策略：
+  - 检索关键词：pinned / link card / PostSwipeItem / PostLinkCard
+  - 找到的旧实现：首页链接卡片与左滑容器
+  - 最终选择：复用 PostLinkCard 与 PostSwipeItem，仅调整展示与交互
+- 风险点：
+  - 置顶页左滑与点击详情的手势冲突需实机确认
+- 验证方式：
+  - 首页置顶卡片链接类型显示文本说明
+  - 置顶页链接条目点击进入详情，左滑仅作者可见
+
 ## [2026-01-13] 置顶页时间轴样式与年份标识优化
 - 背景/需求：年份标识靠左且更简洁，月/日格式改为 dd + mm月
 - 修改类型：feat
