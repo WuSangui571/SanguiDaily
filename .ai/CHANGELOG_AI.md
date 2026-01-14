@@ -5,6 +5,43 @@
 
 ---
 
+## [2026-01-14] 前端默认 API 基址切换为 /sanguidaily 前缀
+- 背景/需求：前端需直连 `https://sangui.top/sanguidaily`，不再依赖环境变量
+- 修改类型：fix
+- 影响范围：前端请求基址
+- 变更摘要：
+  1) 默认 API Base 改为 `https://sangui.top/sanguidaily`
+  2) 移除开发环境下的 `VUE_APP_API_BASE` 覆盖
+- 涉及文件：
+  - `sanguidaily-front/src/utils/api.js`
+  - `sanguidaily-front/.env.development`
+- 检索与复用策略：
+  - 检索关键词：apiBaseUrl / VUE_APP_API_BASE / default base url
+  - 找到的旧实现：默认指向 `http://123.56.244.121:8080`，且开发环境覆盖为 `http://127.0.0.1:8080`
+  - 最终选择：替换默认值并移除 dev 环境覆盖，仍保留 storage 覆盖能力
+- 风险点：
+  - 若未配置 Nginx `/sanguidaily/` 反代将无法访问
+- 验证方式：
+  - 前端请求 `/api/*` 能从 `https://sangui.top/sanguidaily` 正常响应
+
+## [2026-01-14] Nginx 增加 8080 后端反代入口（不影响 8082）
+- 背景/需求：在现有 8082 项目基础上，为 8080 后端新增反代入口
+- 修改类型：refactor
+- 影响范围：Nginx 配置
+- 变更摘要：
+  1) 增加 `/sanguidaily/` 前缀反代到 `127.0.0.1:8080`
+  2) 保持 `/api/` 仍指向 `127.0.0.1:8082`
+- 涉及文件：
+  - `fake-nginx-conf/nginx.conf`
+- 检索与复用策略：
+  - 检索关键词：location /api/ / 8082 / nginx.conf
+  - 找到的旧实现：仅 `/api/` 指向 8082
+  - 最终选择：新增独立前缀，不改动原有接口
+- 风险点：
+  - 需要前端将 baseUrl 指向 `https://sangui.top/sanguidaily`
+- 验证方式：
+  - `https://sangui.top/sanguidaily/api/health`（若有）或任一 API 可达
+
 ## [2026-01-14] 后端配置支持 dev/prod 一键切换
 - 背景/需求：后端从 dev 迁移到 Linux prod，并可在配置文件中切换环境
 - 修改类型：refactor
