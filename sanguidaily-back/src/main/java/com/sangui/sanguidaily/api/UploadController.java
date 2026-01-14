@@ -8,6 +8,7 @@ import com.sangui.sanguidaily.service.UploadService;
 import com.sangui.sanguidaily.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +25,18 @@ public class UploadController {
     private final UploadService uploadService;
     private final JwtService jwtService;
     private final UserService userService;
+    private final String publicBase;
 
-    public UploadController(UploadService uploadService, JwtService jwtService, UserService userService) {
+    public UploadController(
+        UploadService uploadService,
+        JwtService jwtService,
+        UserService userService,
+        @Value("${app.public-base:}") String publicBase
+    ) {
         this.uploadService = uploadService;
         this.jwtService = jwtService;
         this.userService = userService;
+        this.publicBase = normalizePublicBase(publicBase);
     }
 
     @PostMapping("/image")
@@ -89,6 +97,15 @@ public class UploadController {
     }
 
     private String buildFileUrl(HttpServletRequest request, String relativePath) {
+        if (publicBase != null && !publicBase.isBlank()) {
+            if (relativePath == null || relativePath.isBlank()) {
+                return publicBase;
+            }
+            if (relativePath.startsWith("/")) {
+                return publicBase + relativePath;
+            }
+            return publicBase + "/" + relativePath;
+        }
         String scheme = request.getScheme();
         String host = request.getServerName();
         int port = request.getServerPort();
@@ -113,5 +130,19 @@ public class UploadController {
             builder.append('/').append(relativePath);
         }
         return builder.toString();
+    }
+
+    private String normalizePublicBase(String value) {
+        if (value == null) {
+            return "";
+        }
+        String trimmed = value.trim();
+        if (trimmed.isEmpty()) {
+            return "";
+        }
+        if (trimmed.endsWith("/")) {
+            return trimmed.substring(0, trimmed.length() - 1);
+        }
+        return trimmed;
     }
 }

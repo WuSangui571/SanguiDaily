@@ -5,6 +5,25 @@
 
 ---
 
+## [2026-01-14] 上传返回地址支持配置 public base
+- 背景/需求：图片 URL 需使用 `/sanguidaily/uploads` 前缀，避免与 8082 项目冲突
+- 修改类型：fix
+- 影响范围：后端上传返回地址
+- 变更摘要：
+  1) 上传接口支持 `app.public-base` 作为对外访问前缀
+  2) prod 配置指定 `https://sangui.top/sanguidaily`
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/UploadController.java`
+  - `sanguidaily-back/src/main/resources/application-prod.properties`
+- 检索与复用策略：
+  - 检索关键词：buildFileUrl / uploads / request scheme
+  - 找到的旧实现：上传返回 URL 依赖 request 的 scheme/host/port
+  - 最终选择：增加可配置 public base，避免反代下生成本机 URL
+- 风险点：
+  - 若未配置 public base，仍会回退到 request 方案
+- 验证方式：
+  - 上传图片后返回 URL 以 `https://sangui.top/sanguidaily/uploads` 开头
+
 ## [2026-01-14] 前端统一将 http 资源升级为 https
 - 背景/需求：站点已是 https，前端存在 http 资源导致混合内容拦截
 - 修改类型：fix
