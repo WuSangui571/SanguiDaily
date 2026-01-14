@@ -5,6 +5,96 @@
 
 ---
 
+## [2026-01-14] 后端配置支持 dev/prod 一键切换
+- 背景/需求：后端从 dev 迁移到 Linux prod，并可在配置文件中切换环境
+- 修改类型：refactor
+- 影响范围：后端配置
+- 变更摘要：
+  1) 使用 Spring Profile 拆分 dev/prod 环境配置
+  2) dev/prod 分别设置数据库 IP、上传路径与 ffmpeg 路径
+  3) 默认激活 dev，可通过 application.properties 切换
+- 涉及文件：
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-back/src/main/resources/application-dev.properties`
+  - `sanguidaily-back/src/main/resources/application-prod.properties`
+- 检索与复用策略：
+  - 检索关键词：application.properties / spring.profiles.active / app.upload-root / app.ffmpeg-path / datasource
+  - 找到的旧实现：所有环境配置集中在 application.properties
+  - 最终选择：拆分 profile 文件并保留公共配置
+- 风险点：
+  - 切换为 prod 后需确保 Linux 路径与本机权限正确
+- 验证方式：
+  - 启动时切换 spring.profiles.active 为 dev/prod，检查实际生效配置
+
+## [2026-01-13] 作者账号昵称固定为三桂
+- 背景/需求：作者角色在我的页昵称固定显示“ 三桂 ”
+- 修改类型：fix
+- 影响范围：前端我的页
+- 变更摘要：
+  1) 作者角色昵称强制显示为“ 三桂 ”
+- 涉及文件：
+  - `sanguidaily-front/src/pages/me/index.vue`
+- 检索与复用策略：
+  - 检索关键词：me / nickname / OWNER
+  - 找到的旧实现：昵称来自微信或“未命名”
+  - 最终选择：在我的页增加 displayName 逻辑
+- 风险点：
+  - 无
+- 验证方式：
+  - 作者登录后“我的”页昵称显示为三桂
+
+## [2026-01-13] 我的页移除角色状态与账号分区
+- 背景/需求：移除角色状态与账号分区，登录按钮放入头像栏
+- 修改类型：fix
+- 影响范围：前端我的页
+- 变更摘要：
+  1) 移除账号与角色状态分区
+  2) 登录/退出按钮移动到头像信息栏右侧
+- 涉及文件：
+  - `sanguidaily-front/src/pages/me/index.vue`
+- 检索与复用策略：
+  - 检索关键词：me / 账号 / 角色状态
+  - 找到的旧实现：账号与角色状态独立分区
+  - 最终选择：合并到头像栏并简化布局
+- 风险点：
+  - 无
+- 验证方式：
+  - 我的页仅显示头像行与作者入口
+
+## [2026-01-13] 我的页作者入口与更多分区显示调整
+- 背景/需求：未登录与非作者隐藏作者入口/更多，作者隐藏更多
+- 修改类型：fix
+- 影响范围：前端我的页
+- 变更摘要：
+  1) 作者入口仅作者可见
+  2) 更多分区移除
+- 涉及文件：
+  - `sanguidaily-front/src/pages/me/index.vue`
+- 检索与复用策略：
+  - 检索关键词：me / 作者入口 / 更多
+  - 找到的旧实现：非作者显示提示与更多分区
+  - 最终选择：按角色收敛展示
+- 风险点：
+  - 无
+- 验证方式：
+  - 非作者/未登录仅显示账号与角色状态
+## [2026-01-13] 未登录头像替换为 nologo
+- 背景/需求：未登录时“我的”页头像应显示占位图
+- 修改类型：fix
+- 影响范围：前端我的页
+- 变更摘要：
+  1) 未登录时头像改为 `/static/nologo.png`
+- 涉及文件：
+  - `sanguidaily-front/src/pages/me/index.vue`
+- 检索与复用策略：
+  - 检索关键词：avatar / me / nologo
+  - 找到的旧实现：未登录回退 logo.png
+  - 最终选择：在原逻辑中增加未登录判断
+- 风险点：
+  - 无
+- 验证方式：
+  - 未登录进入我的页显示 nologo
+
 ## [2026-01-13] 联系我二维码使用前端静态资源并修复保存
 - 背景/需求：联系我二维码显示/保存失败
 - 修改类型：fix
