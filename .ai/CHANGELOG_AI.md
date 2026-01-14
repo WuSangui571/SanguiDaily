@@ -5,6 +5,23 @@
 
 ---
 
+## [2026-01-14] 前端统一将 http 资源升级为 https
+- 背景/需求：站点已是 https，前端存在 http 资源导致混合内容拦截
+- 修改类型：fix
+- 影响范围：前端请求与资源解析
+- 变更摘要：
+  1) API 基址与资源 URL 统一在前端升级为 https
+- 涉及文件：
+  - `sanguidaily-front/src/utils/api.js`
+- 检索与复用策略：
+  - 检索关键词：http:// / apiBaseUrl / resolveAssetUrl
+  - 找到的旧实现：HTTP 地址直接返回，导致混合内容
+  - 最终选择：在请求与资源解析阶段统一升级为 HTTPS
+- 风险点：
+  - 若第三方资源仅支持 HTTP，升级后可能不可用
+- 验证方式：
+  - 前端页面图片可正常加载，控制台无 Mixed Content 报错
+
 ## [2026-01-14] 前端默认 API 基址切换为 /sanguidaily 前缀
 - 背景/需求：前端需直连 `https://sangui.top/sanguidaily`，不再依赖环境变量
 - 修改类型：fix
