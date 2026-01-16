@@ -5,6 +5,28 @@
 
 ---
 
+## [2026-01-16] 垃圾箱左滑恢复与标题修复
+- 背景/需求：垃圾箱顶部标题乱码；恢复按钮需改为左滑操作
+- 修改类型：fix
+- 影响范围：前端页面 / 组件 / 路由配置
+- 变更摘要：
+  1) 垃圾箱导航标题修复为“垃圾箱”
+  2) 垃圾箱列表改为左滑仅显示“恢复”按钮
+  3) PostSwipeItem 支持可选 pin/edit/restore 等动作
+- 涉及文件：
+  - `sanguidaily-front/src/pages.json`
+  - `sanguidaily-front/src/pages/trash/index.vue`
+  - `sanguidaily-front/src/components/PostSwipeItem.vue`
+- 检索与复用策略：
+  - 检索关键词：trash / PostSwipeItem / navigationBarTitleText
+  - 找到的旧实现：垃圾箱路由标题为 ???，恢复按钮为普通按钮
+  - 最终选择：复用左滑组件并增加可选动作
+- 风险点：
+  - 若动作数量为 0，左滑无意义（当前垃圾箱至少有恢复）
+- 验证方式：
+  - 顶部标题显示“垃圾箱”
+  - 左滑出现恢复按钮并可恢复动态
+
 ## [2026-01-16] 垃圾箱排序支持按发布时间/删除时间
 - 背景/需求：垃圾箱需提供两种排序方式，默认按发布时间倒序，可切换按删除时间倒序
 - 修改类型：feat
