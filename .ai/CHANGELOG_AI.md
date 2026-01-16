@@ -5,6 +5,26 @@
 
 ---
 
+## [2026-01-16] 垃圾箱排序支持按发布时间/删除时间
+- 背景/需求：垃圾箱需提供两种排序方式，默认按发布时间倒序，可切换按删除时间倒序
+- 修改类型：feat
+- 影响范围：前端页面 / 前端状态
+- 变更摘要：
+  1) 垃圾箱新增排序切换按钮
+  2) postStore 支持按创建/删除时间排序输出
+- 涉及文件：
+  - `sanguidaily-front/src/pages/trash/index.vue`
+  - `sanguidaily-front/src/stores/postStore.js`
+- 检索与复用策略：
+  - 检索关键词：trash / deletedPosts / sort
+  - 找到的旧实现：固定按删除时间倒序
+  - 最终选择：复用现有 deletedPosts 列表，按模式切换排序
+- 风险点：
+  - 已删除但无 deleted_at 的数据将回退到 created_at
+- 验证方式：
+  - 默认进入垃圾箱按发布时间倒序
+  - 切换为“按删除时间”后顺序变化
+
 ## [2026-01-16] 修复测试编译依赖缺失导致的启动失败
 - 背景/需求：启动时报错 `org.springframework.boot.test.autoconfigure.web.servlet` 不存在
 - 修改类型：fix
