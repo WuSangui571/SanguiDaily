@@ -5,6 +5,27 @@
 
 ---
 
+## [2026-01-16] 清理 appid 明文并改为环境变量注入
+- 背景/需求：GitHub 报警提示 appid 泄露，需移除仓库内明文配置
+- 修改类型：fix
+- 影响范围：后端配置 / 小程序配置
+- 变更摘要：
+  1) 微信小程序 `mp-weixin.appid` 清空，改为本地构建时填写
+  2) 后端 `wechat.appid/secret` 改为环境变量注入
+- 涉及文件：
+  - `sanguidaily-front/src/manifest.json`
+  - `sanguidaily-back/src/main/resources/application.properties`
+- 检索与复用策略：
+  - 检索关键词：appid / wechat.appid / manifest.json
+  - 找到的旧实现：appid 与 secret 明文写入配置
+  - 最终选择：使用 env 占位并移除明文
+- 风险点：
+  - 未设置 `WECHAT_APPID/WECHAT_SECRET` 将导致微信登录失败
+  - 小程序构建前需补齐 appid
+- 验证方式：
+  - 设置环境变量后调用 `/api/auth/wechat` 成功
+  - 小程序构建时填入 appid，真机可正常登录
+
 ## [2026-01-16] 配置收敛：CORS 白名单 + 默认环境 + 小程序域名校验
 - 背景/需求：收敛 CORS 风险、避免默认 prod 误连、恢复小程序域名校验并补最小 API 回归
 - 修改类型：fix
