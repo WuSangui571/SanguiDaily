@@ -5,6 +5,41 @@
 
 ---
 
+## [2026-01-16] 动态软删除与回收站
+- 背景/需求：动态删除改为假删除；首页左滑提供删除；我的页提供垃圾箱入口并支持恢复
+- 修改类型：feat
+- 影响范围：前端页面 / 前端状态 / 后端接口 / 文档 / 测试
+- 变更摘要：
+  1) 后端新增软删除/恢复/回收站列表接口，基于 `deleted_at`
+  2) 前端左滑新增删除按钮，调用软删除并从列表隐藏
+  3) 新增垃圾箱页面与作者入口，支持恢复动态
+  4) postStore 新增删除/恢复/回收站数据流
+  5) 增补 API 冒烟测试与项目记忆接口清单
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/PostController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/PostService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/PostRepository.java`
+  - `sanguidaily-back/src/test/java/com/sangui/sanguidaily/api/ApiSmokeTests.java`
+  - `sanguidaily-front/src/components/PostSwipeItem.vue`
+  - `sanguidaily-front/src/pages/feed/index.vue`
+  - `sanguidaily-front/src/pages/pinned/index.vue`
+  - `sanguidaily-front/src/pages/me/index.vue`
+  - `sanguidaily-front/src/pages/trash/index.vue`
+  - `sanguidaily-front/src/pages.json`
+  - `sanguidaily-front/src/stores/postStore.js`
+  - `.ai/PROJECT_MEMORY.md`
+- 检索与复用策略：
+  - 检索关键词：PostSwipeItem / deleted_at / PostRepository / postStore
+  - 找到的旧实现：t_post 已有 deleted_at 字段并在查询中过滤
+  - 最终选择：复用 deleted_at 软删除模型，新增接口与前端入口
+- 风险点：
+  - 未登录或非作者调用删除/恢复会返回 403
+  - 回收站列表需带 Authorization，且只对作者开放
+- 验证方式：
+  - 左滑删除后动态从首页/置顶页消失
+  - 垃圾箱页面可加载已删除动态并恢复
+  - 恢复后动态重新出现在首页
+
 ## [2026-01-16] 清理 appid 明文并改为环境变量注入
 - 背景/需求：GitHub 报警提示 appid 泄露，需移除仓库内明文配置
 - 修改类型：fix

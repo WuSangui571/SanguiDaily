@@ -49,6 +49,19 @@ public class PostRepository {
         return jdbcTemplate.query(sql.toString(), postRowMapper(), args.toArray()).stream().findFirst();
     }
 
+    public Optional<Post> findById(Long id) {
+        return jdbcTemplate.query(
+            "select * from t_post where id = ?",
+            postRowMapper(),
+            id
+        ).stream().findFirst();
+    }
+
+    public List<Post> listDeletedPosts() {
+        String sql = "select * from t_post where deleted_at is not null order by deleted_at desc, created_at desc";
+        return jdbcTemplate.query(sql, postRowMapper());
+    }
+
     public Post insert(PostCreateRequest request) {
         String sql = """
             insert into t_post (
@@ -127,6 +140,22 @@ public class PostRepository {
             id
         );
         return findVisibleById(id, "OWNER");
+    }
+
+    public Optional<Post> softDelete(Long id) {
+        jdbcTemplate.update(
+            "update t_post set deleted_at = now(3), updated_at = now(3) where id = ?",
+            id
+        );
+        return findById(id);
+    }
+
+    public Optional<Post> restore(Long id) {
+        jdbcTemplate.update(
+            "update t_post set deleted_at = null, updated_at = now(3) where id = ?",
+            id
+        );
+        return findById(id);
     }
 
     public int incrementLikeCount(Long postId) {

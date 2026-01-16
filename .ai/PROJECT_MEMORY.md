@@ -39,6 +39,7 @@
 | pages/post-detail | 动态详情 | `sanguidaily-front/src/pages/post-detail/index.vue` | 复用卡片完整展示 |
 | pages/composer | 发布页 | `sanguidaily-front/src/pages/composer/index.vue` | 按类型提交本地数据 |
 | pages/me | 我的 | `sanguidaily-front/src/pages/me/index.vue` | 角色与入口 |
+| pages/trash | ??? | `sanguidaily-front/src/pages/trash/index.vue` | ??????? |
 | components | 动态卡片与子组件 | `sanguidaily-front/src/components/*` | PostCard/媒体/点赞 |
 | stores | 数据与行为 | `sanguidaily-front/src/stores/*` | user/post/image/like |
 | back/api | 后端接口 | `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/*` | users/posts/images/likes |
@@ -63,6 +64,9 @@
 - `PUT /api/posts/{id}`
 - `PATCH /api/posts/{id}/pin`
 - `PATCH /api/posts/{id}/status`
+- `PATCH /api/posts/{id}/delete`
+- `PATCH /api/posts/{id}/restore`
+- `GET /api/posts/deleted`
 - `GET /api/post-images`
 - `POST /api/post-images/batch`
 - `PUT /api/post-images/replace`
@@ -90,6 +94,7 @@
 | t_user | role | OWNER / VIEWER / SUSPENDED |
 | t_post | type | 0 文本 / 1 图片 / 2 链接 / 3 视频 |
 | t_post | status | 0 公开 / 1 私密 |
+| t_post | deleted_at | ??????null ????? |
 | t_post_image | sort_order | 九宫格按序展示 |
 
 ---

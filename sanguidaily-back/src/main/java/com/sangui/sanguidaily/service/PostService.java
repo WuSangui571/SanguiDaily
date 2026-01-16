@@ -48,6 +48,18 @@ public class PostService {
         return postRepository.updateStatus(id, status);
     }
 
+    public List<Post> listDeletedPosts() {
+        return postRepository.listDeletedPosts();
+    }
+
+    public Optional<Post> softDelete(Long id) {
+        return postRepository.softDelete(id);
+    }
+
+    public Optional<Post> restore(Long id) {
+        return postRepository.restore(id);
+    }
+
     private List<PostImage> buildImages(Long postId, List<String> urls) {
         if (urls == null || urls.isEmpty()) {
             return List.of();

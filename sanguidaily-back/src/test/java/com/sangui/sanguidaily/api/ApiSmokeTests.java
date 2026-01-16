@@ -85,4 +85,26 @@ class ApiSmokeTests {
         mockMvc.perform(multipart("/api/uploads/image").file(file))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    void listDeletedForbiddenWhenNoAuth() throws Exception {
+        mockMvc.perform(get("/api/posts/deleted"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deletePostForbiddenWhenNoAuth() throws Exception {
+        mockMvc.perform(post("/api/posts/1/delete"))
+            .andExpect(status().isMethodNotAllowed());
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .patch("/api/posts/1/delete"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void restorePostForbiddenWhenNoAuth() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .patch("/api/posts/1/restore"))
+            .andExpect(status().isForbidden());
+    }
 }

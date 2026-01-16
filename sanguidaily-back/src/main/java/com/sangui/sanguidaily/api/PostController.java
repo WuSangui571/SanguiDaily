@@ -55,6 +55,16 @@ public class PostController {
         return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/deleted")
+    public ResponseEntity<List<Post>> listDeletedPosts(
+        @RequestHeader(value = "Authorization", required = false) String authorization
+    ) {
+        if (!isOwner(authorization)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(postService.listDeletedPosts());
+    }
+
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody PostCreateRequest request) {
         Post created = postService.createPost(request);
@@ -103,6 +113,30 @@ public class PostController {
         }
         Optional<Post> updated = postService.updateStatus(id, status);
         return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}/delete")
+    public ResponseEntity<Post> deletePost(
+        @RequestHeader(value = "Authorization", required = false) String authorization,
+        @PathVariable("id") Long id
+    ) {
+        if (!isOwner(authorization)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Optional<Post> deleted = postService.softDelete(id);
+        return deleted.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}/restore")
+    public ResponseEntity<Post> restorePost(
+        @RequestHeader(value = "Authorization", required = false) String authorization,
+        @PathVariable("id") Long id
+    ) {
+        if (!isOwner(authorization)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Optional<Post> restored = postService.restore(id);
+        return restored.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     private boolean isOwner(String authorization) {
