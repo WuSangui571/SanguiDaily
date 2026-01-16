@@ -5,6 +5,36 @@
 
 ---
 
+## [2026-01-16] 配置收敛：CORS 白名单 + 默认环境 + 小程序域名校验
+- 背景/需求：收敛 CORS 风险、避免默认 prod 误连、恢复小程序域名校验并补最小 API 回归
+- 修改类型：fix
+- 影响范围：后端配置 / 前端配置 / 测试
+- 变更摘要：
+  1) CORS 改为可配置白名单，不再默认允许全部来源
+  2) `spring.profiles.active` 改为 env 可控，默认 dev
+  3) 微信小程序 `urlCheck` 恢复开启
+  4) 开发环境 API base 恢复本地默认
+  5) 新增 API 冒烟测试覆盖登录/上传/数据读取/权限拒绝
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/config/WebConfig.java`
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-front/src/manifest.json`
+  - `sanguidaily-front/.env.development`
+  - `sanguidaily-back/src/test/java/com/sangui/sanguidaily/api/ApiSmokeTests.java`
+- 检索与复用策略：
+  - 检索关键词：CORS / profiles.active / urlCheck / apiBaseUrl / WebMvcTest
+  - 找到的旧实现：CORS 允许 *；profile 固定 prod；urlCheck 关闭；开发环境 base 为空；测试仅 contextLoads
+  - 最终选择：在现有配置与测试框架上最小增量调整
+- 风险点：
+  - 生产需通过 `APP_CORS_ALLOWED_ORIGINS` 或配置文件补齐允许域名
+  - `urlCheck` 开启后需保证小程序后台域名配置正确
+  - 开发环境请求将优先走本地地址
+- 验证方式：
+  - H5 跨域请求仅允许白名单域名
+  - `SPRING_PROFILES_ACTIVE=prod` 可正常切换环境
+  - 小程序预览时域名校验生效
+  - `ApiSmokeTests` 通过（未执行）
+
 ## [2026-01-14] 上传返回地址支持配置 public base
 - 背景/需求：图片 URL 需使用 `/sanguidaily/uploads` 前缀，避免与 8082 项目冲突
 - 修改类型：fix
