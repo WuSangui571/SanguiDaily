@@ -5,6 +5,23 @@
 
 ---
 
+## [2026-01-16] 修复测试编译依赖缺失导致的启动失败
+- 背景/需求：启动时报错 `org.springframework.boot.test.autoconfigure.web.servlet` 不存在
+- 修改类型：fix
+- 影响范围：测试
+- 变更摘要：
+  1) API 冒烟测试改为 standalone MockMvc，不再依赖 `@WebMvcTest`
+- 涉及文件：
+  - `sanguidaily-back/src/test/java/com/sangui/sanguidaily/api/ApiSmokeTests.java`
+- 检索与复用策略：
+  - 检索关键词：WebMvcTest / MockMvc / spring-boot-test
+  - 找到的旧实现：使用 `@WebMvcTest` 导致缺包编译失败
+  - 最终选择：改为 MockMvcBuilders.standaloneSetup
+- 风险点：
+  - standalone MockMvc 不会加载完整 Spring MVC 配置
+- 验证方式：
+  - 项目构建时测试编译通过
+
 ## [2026-01-16] 动态软删除与回收站
 - 背景/需求：动态删除改为假删除；首页左滑提供删除；我的页提供垃圾箱入口并支持恢复
 - 修改类型：feat
