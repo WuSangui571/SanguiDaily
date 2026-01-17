@@ -54,15 +54,15 @@ cd sanguidaily-back
 - 环境切换：`SPRING_PROFILES_ACTIVE`（dev/prod），默认读取 `application.properties` 中的配置
 - 数据库连接：
   - `application-dev.properties` / `application-prod.properties` 中的 `spring.datasource.url`
-  - 账号密码：`application.properties` 中的 `spring.datasource.username/password`
+  - 账号密码：环境变量 `DATASOURCE_USERNAME` / `DATASOURCE_PASSWORD`
 - 微信登录：环境变量 `WECHAT_APPID` / `WECHAT_SECRET`
 - CORS：`APP_CORS_ALLOWED_ORIGINS`（逗号分隔）
 - 上传与视频封面：
   - `app.upload-root`
   - `app.ffmpeg-path`
   - `app.public-base`（生产环境对外访问前缀）
-- JWT：`app.jwt.secret` / `app.jwt.expire-days`
-- 作者识别：`app.owner-openid`
+- JWT：`JWT_SECRET` / `app.jwt.expire-days`
+- 作者识别：`APP_OWNER_OPENID`
 
 ### 前端配置
 - 微信小程序 AppID：`sanguidaily-front/src/manifest.json` 中的 `mp-weixin.appid`（部署时请替换为自己的 AppID）

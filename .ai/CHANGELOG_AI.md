@@ -5,6 +5,31 @@
 
 ---
 
+## [2026-01-17] 配置去敏感化与仓库规范完善
+- 背景/需求：去除硬编码配置、降低误用风险、完善仓库忽略规则
+- 修改类型：fix
+- 影响范围：后端配置 / 前端配置 / 文档 / 工程规范
+- 变更摘要：
+  1) 后端默认 profile 改为 dev，并移除 owner openid 硬编码
+  2) 数据库用户名不再提供默认值，统一通过环境变量注入
+  3) 小程序 AppID 置空避免固化
+  4) `.gitignore` 增加 `db_backups/`
+  5) README 同步更新环境变量说明
+- 涉及文件：
+  - `sanguidaily-back/src/main/resources/application.properties`
+  - `sanguidaily-front/src/manifest.json`
+  - `.gitignore`
+  - `README.md`
+- 检索与复用策略：
+  - 检索关键词：application.properties / manifest.json / .gitignore / README
+  - 找到的旧实现：默认 prod、owner openid 固化、AppID 固化、db_backups 未忽略
+  - 最终选择：配置外置 + 文档同步，最小改动
+- 风险点：
+  - 未设置 `SPRING_PROFILES_ACTIVE` 将使用 dev
+  - 未设置 `DATASOURCE_USERNAME` 将导致数据库连接失败
+- 验证方式：
+  - 目视检查配置与文档一致（未执行）
+
 ## [2026-01-17] 根 README 补充项目介绍与部署说明
 - 背景/需求：完善项目对外说明与部署注意事项
 - 修改类型：docs
