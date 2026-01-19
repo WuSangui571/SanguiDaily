@@ -3,6 +3,7 @@ package com.sangui.sanguidaily.api;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.sangui.sanguidaily.service.JwtService;
 import com.sangui.sanguidaily.service.PostService;
+import com.sangui.sanguidaily.service.UploadCleanupService;
 import com.sangui.sanguidaily.service.UploadService;
 import com.sangui.sanguidaily.service.UserService;
 import com.sangui.sanguidaily.service.WechatAuthService;
@@ -36,6 +38,8 @@ class ApiSmokeTests {
 
     private UploadService uploadService;
 
+    private UploadCleanupService uploadCleanupService;
+
     @BeforeEach
     void setUp() {
         postService = org.mockito.Mockito.mock(PostService.class);
@@ -43,11 +47,19 @@ class ApiSmokeTests {
         userService = org.mockito.Mockito.mock(UserService.class);
         wechatAuthService = org.mockito.Mockito.mock(WechatAuthService.class);
         uploadService = org.mockito.Mockito.mock(UploadService.class);
+        uploadCleanupService = org.mockito.Mockito.mock(UploadCleanupService.class);
 
         PostController postController = new PostController(postService, jwtService, userService);
         AuthController authController = new AuthController(wechatAuthService, userService, jwtService);
         UploadController uploadController = new UploadController(uploadService, jwtService, userService, "");
-        mockMvc = MockMvcBuilders.standaloneSetup(postController, authController, uploadController).build();
+        UploadCleanupController cleanupController =
+            new UploadCleanupController(uploadCleanupService, jwtService, userService);
+        mockMvc = MockMvcBuilders.standaloneSetup(
+            postController,
+            authController,
+            uploadController,
+            cleanupController
+        ).build();
 
         when(jwtService.parseToken(any())).thenReturn(Optional.empty());
     }
@@ -82,6 +94,16 @@ class ApiSmokeTests {
         MockMultipartFile file =
             new MockMultipartFile("file", "test.jpg", "image/jpeg", "1".getBytes());
         mockMvc.perform(multipart("/api/uploads/image").file(file))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void cleanupOrphansForbiddenWhenNoAuth() throws Exception {
+        mockMvc.perform(get("/api/uploads/orphans"))
+            .andExpect(status().isForbidden());
+        mockMvc.perform(delete("/api/uploads/orphans")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"paths\":[]}"))
             .andExpect(status().isForbidden());
     }
 

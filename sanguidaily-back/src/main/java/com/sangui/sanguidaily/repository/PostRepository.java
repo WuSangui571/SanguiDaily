@@ -177,6 +177,15 @@ public class PostRepository {
         ).stream().findFirst();
     }
 
+    public List<PostMediaRef> listAllMediaRefs() {
+        String sql = "select link_cover_url, video_url, video_cover_url from t_post";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new PostMediaRef(
+            rs.getString("link_cover_url"),
+            rs.getString("video_url"),
+            rs.getString("video_cover_url")
+        ));
+    }
+
     private boolean isOwner(String role) {
         return "OWNER".equalsIgnoreCase(role);
     }
@@ -206,4 +215,6 @@ public class PostRepository {
             rs.getObject("deleted_at", LocalDateTime.class)
         );
     }
+
+    public record PostMediaRef(String linkCoverUrl, String videoUrl, String videoCoverUrl) {}
 }

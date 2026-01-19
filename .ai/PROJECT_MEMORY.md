@@ -75,6 +75,8 @@
 - `DELETE /api/post-likes`
 - `POST /api/uploads/image`
 - `POST /api/uploads/video`
+- `GET /api/uploads/orphans`
+- `DELETE /api/uploads/orphans`
 
 ### 4.3 登录与鉴权（已落地）
 - 微信登录：前端 code + 昵称/头像 -> 后端换取 openid 并注册/登录

@@ -5,6 +5,41 @@
 
 ---
 
+## [2026-01-19] 上传资源清理入口与后端扫描/删除接口
+- 背景/需求：作者入口需要扫描 uploads 中未被动态引用的资源，并支持选择性删除
+- 修改类型：feat
+- 影响范围：后端 API / 前端作者入口
+- 变更摘要：
+  1) 新增 UploadCleanupService 扫描 uploads 与动态引用差集
+  2) 新增 /api/uploads/orphans 扫描与删除接口（仅作者）
+  3) 作者入口新增“资源清理”页与按钮
+  4) 前端目录作为常规目录纳入版本控制以记录页面改动
+  4) 补充后端测试覆盖扫描服务与接口权限校验
+- 涉及文件：
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/service/UploadCleanupService.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/api/UploadCleanupController.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/UploadOrphanFile.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/UploadOrphanDeleteRequest.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/dto/UploadOrphanDeleteResult.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/PostRepository.java`
+  - `sanguidaily-back/src/main/java/com/sangui/sanguidaily/repository/PostImageRepository.java`
+  - `sanguidaily-back/src/test/java/com/sangui/sanguidaily/service/UploadCleanupServiceTests.java`
+  - `sanguidaily-back/src/test/java/com/sangui/sanguidaily/api/ApiSmokeTests.java`
+  - `sanguidaily-front/src/pages/uploads-cleanup/index.vue`
+  - `sanguidaily-front/src/pages/me/index.vue`
+  - `sanguidaily-front/src/pages.json`
+- 检索与复用策略：
+  - 检索关键词：uploads / image_url / video_url / video_cover_url / link_cover_url / deleted_at
+  - 找到的旧实现：UploadService 上传路径规则、WebConfig 静态映射、Post/Image 仓库字段
+  - 最终选择：复用上传目录结构与动态字段，仅新增扫描/删除接口与前端页面
+- 风险点：
+  - 误删风险：删除仅限未引用集合，否则可能丢失资源
+  - 目录过大时扫描耗时增加
+- 验证方式：
+  - `./mvnw.cmd -q -Dtest=UploadCleanupServiceTests test`
+  - `./mvnw.cmd -q -Dtest=ApiSmokeTests test`
+  - 前端手工：作者入口 -> 资源清理 页验证扫描与删除
+
 ## [2026-01-17] 配置去敏感化与仓库规范完善
 - 背景/需求：去除硬编码配置、降低误用风险、完善仓库忽略规则
 - 修改类型：fix

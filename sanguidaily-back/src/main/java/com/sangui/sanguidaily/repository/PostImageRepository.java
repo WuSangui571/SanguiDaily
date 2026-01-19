@@ -57,6 +57,13 @@ public class PostImageRepository {
         jdbcTemplate.update("delete from t_post_image where post_id = ?", postId);
     }
 
+    public List<String> listAllImageUrls() {
+        return jdbcTemplate.query(
+            "select image_url from t_post_image",
+            (rs, rowNum) -> rs.getString("image_url")
+        );
+    }
+
     private RowMapper<PostImage> postRowMapper() {
         return (rs, rowNum) -> mapPostImage(rs);
     }
