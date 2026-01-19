@@ -15,6 +15,7 @@ log/
 # Uploads
 uploads/
 db_backups/
+.worktrees/
 
 ############################################
 # IDEs
